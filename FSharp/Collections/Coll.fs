@@ -5,14 +5,8 @@ let first = array.[0] // . operator
 let printArray (arr:int[]) =
     // The type annotation is necessary to tell the compiler that arr is an array.
 
-    // the F# "for" loop runs while the var is <= the limit.
-    for i = 0 to arr.Length - 1 do
-        printf "%d " arr.[i]
-    printfn ""
-    // another way
-    for i in arr do
-        printf "%d " i
-    printfn ""
+    // the best way
+    Array.iter (printf "%d ") arr
 // Jump down to main...
 
 

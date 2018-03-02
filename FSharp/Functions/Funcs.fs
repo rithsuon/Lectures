@@ -20,13 +20,9 @@ let square x = x * x
 
 // Apply the given interest rate to the given principal amount for the given number of years,
 // then return the resulting balance.
-let interest principal rate numYears =
-    let mutable year = 1
-    let mutable balance = principal
-    while year <= numYears do
-        balance <- balance * (1.0 + rate)
-        year <- year + 1
-    balance
+let interest (principal : float) (rate : float) numYears =
+    Seq.fold (fun bal _ -> bal * (1.0 + rate)) principal (seq {1 .. numYears})
+    
 
 // What types are the three parameters? Infer it based on the body of the function.
 

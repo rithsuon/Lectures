@@ -50,7 +50,6 @@ printfn "s is now %d" s // what does this print?
 
 // Outside of a declaration, = is used for comparison; it is not for assignment.
 // F# variables cannot be assigned new values after they are declared...
-// What???
 
 
 // They actually can, if you declare them as "mutable":
