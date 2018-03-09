@@ -12,7 +12,7 @@ printfn "%d is an integer" 10
 // from top to bottom.
 
 // Use "let" to declare a variable or a function.
-let pi = 3.14159
+let (pi : float) = 3.14159
 // Notice what's missing?
 
 // F# makes heavy use of type inference to determine types. In many cases, you will never specify
@@ -30,6 +30,7 @@ let x = 10
 
 // Then how do we declare a 2-byte "short" integer?
 let s = 10s
+
 
 // F# defines suffixes for literal values that specify their type:
 // s = "short"; "L" = long; f = "float 32"

@@ -1,92 +1,93 @@
-﻿// Arrays are fixed-size, mutable collections of homogenous data.
-let array = [|1; 2; 3; 4; 5|] // semicolons to separate
-let first = array.[0] // . operator
+﻿// A sequence is an immutable, iterable collection of values with no concern for how the values
+// are represented in the sequence. 
 
-let printArray (arr:int[]) =
-    // The type annotation is necessary to tell the compiler that arr is an array.
+// There are many helpers to define sequences. The simplest is the seq keyword.
 
-    // the best way
-    Array.iter (printf "%d ") arr
-// Jump down to main...
+let mySeq = seq {yield 1; yield 2; yield 3}
+
+// This sequence contains 3 values, and can be iterated over using a for loop.
+let printSequence (s : int seq) =
+    for i in s do
+        printfn "%d" i
+// Fun fact: the type annotation isn't necessary...
+
+printSequence mySeq
+
+// A shortcut lets us define sequences over ranges.
+let longSeq = seq {1 .. 1000}
+printSequence longSeq
+
+// A sequence is not a real collection type. It cannot be added to or removed from. 
+// The shortcuts we've seen involve some hacks at implementation time.
+// The real purpose of seq is as a base type for other collections, including arrays
+// and linked lists.
 
 
-// A list is an immutable collection of homogenous data.
-let list1 = ["a"; "b"] // note the difference with arrays
-let list2 = "c" :: list1 // :: is called "cons" ; create a new list by placing a new 
+
+// A list is an immutable collection of homogenous data stored as a persistent linked list.
+let list1 = [1; 2; 3] // square brackets and semicolons
+let list2 = 4 :: list1 // :: is "cons" ; create a new list by placing a new 
                          // head on an existing list
 
 let list3 = list1 @ list2 // @ is "concat": concatenate/append two lists
 
-let printList li =
-    // Lists do have .[] indexing like arrays, but lists are secretly LINKED LISTS...
-    // and what is the O(_) runtime complexity of indexing a linked list?
+// Lists are sequences, so we can pass them to a function taking a seq.
+printSequence list1
+
+// Lists have "properties" accessed with "." syntax, like in Java/C#. 
+
+printfn "list1.Head: %d\n" list1.Head // Head is "first"
+printfn "list1.Tail:" 
+printSequence list1.Tail
+
+
+// Jump over to "Generics.fs" first
+
+
+// Lists are a "generic type", in that many operations on lists are agnostic regarding
+// the type of data contained in the list. We can write methods that operate on lists of any 
+// type using generics.
+let second (coll : 'a list) =
+    coll.Tail.Head
+
+// second is of type ('a list) -> 'a
+// Given a list of some type, returns an element of the same type.
+printfn "\nsecond list1: %d" (second list1)
+
+// Writing type annotations for lists is tedious. We typically DON'T use .Head or .Tail for this reason.
+// Instead, the List class has functions named "head" and "tail" that can be applied to a list object.
+
+let third coll =
+    List.head (List.tail (List.tail coll))
+// coll is inferred to be of type "'a list", because List.tail takes a param of type "'a list". NICE.
+
+// So get ".Head" and ".Tail" out of your brain. That's imperative-style thinking. Think functionally!!
+
+// All the parens in third are making me dizzy. I thought we were done with Lisp!
+// Enter the |> operator, F#'s "pipe forward" operator. |> is an infix operator that takes a value and a 
+// function. The value is passed to the function as the last parameter.
+let third2 coll =
+    coll |> List.tail |> List.tail |> List.head
+
+// |> can be broken over many lines for better readability
+let second2 coll =
+    coll
+    |> List.tail
+    |> List.head
+// BEAUTIFUL.
+
+// We can use |> all the time!!
+second2 list1 |> printfn "second2 list: %d"
 
 
 
-    // For that reason, we don't typically index lists. We can iterate through them instead.
-    for i in li do
-        printf "%s " i
-    printfn ""
-// Jump down to main...
+// See if a list starts with the given element.
+let startsWith h coll =
+    coll
+    |> List.head
+    |> (=) h      // all operators are also functions; but we have to put them in parens to force this.
 
 
-// Finally, sequences.
-// A sequence is an immutable iterable collection of values, with no concern for how the values
-// are represented in the sequence. Arrays are sequences. Lists are sequences too; in a way, they 
-// are both subclasses of the "seq" type.
+printfn "startsWith list1 5: %O" (startsWith 1 list1)
 
-// The seq keyword and the yield keyword can define sequences.
-let mySeq = seq {yield 1; yield 2; yield 3}
-// The seq above has 3 elements, but there is no specification for how they are represented in a 
-// data structure. This has an important effect: all 3 values don't necessarily have to be in memory
-// at the same time.
-
-// Seq can be defined with .. as well.
-let longSeq = seq {1L .. 1000000000000L}
-// Comment out the long list in main, then examine the memory consumption. 
-// Even though we still have this VERY LONG SEQUENCE, our memory consumption is way down... why?
-
-[<EntryPoint>]
-let main argv = 
-    // Demonstrate passing arrays to functions
-    printArray array
-    printfn "\n"
-    array.[0] <- 100
-    printArray array
-
-    printfn "\n"
-    // Declare a mutable list and mutate it
-    let mutable myList = ["s" ; "h" ; "a" ; "r"]
-    printList myList
-    myList <- "f" :: myList
-    printList myList
-    myList <- myList @ ["p"]
-    printList myList
-
-    // The List module (think: class) has many methods for working with lists.
-    let numbers = [5; 2; 9; 1; 0; 4]
-    printfn "The sum is %d" (List.sum numbers)
-
-    // Useful methods: List.length, List.contains, List.isEmpty, List.sum, List.max
-
-
-    // Lists can be constucted over subranges with [ .. ] syntax.
-    let lotsOfNumbers = [ 1 .. 40000000 ]
-    printfn "The largest of 1 .. 40000000 is %d" (List.max lotsOfNumbers)
-
-    // Run this program and monitor its MEMORY CONSUMPTION -- WOW!!!
-    // Where is that coming from?
-
-
-
-
-
-    // The Seq module has similar methods for working with sequences.
-    // printfn "The largest of 1 .. 1000000000000L is %d" (Seq.max longSeq)
-    // So what's the difference?
-
-
-
-    System.Console.ReadLine() // wait for user to press Enter to close
-    0
-    
+// You know what's coming next.... recursive functions on lists!

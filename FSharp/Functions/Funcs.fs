@@ -12,6 +12,8 @@ let square x = x * x
 
 // If the context is unclear, then other hints may be needed.
 
+
+
 // Like variables, "square" has a type. Its type is "int -> int", which indicates a function
 // taking an int variable and returning an int.
 
@@ -20,8 +22,23 @@ let square x = x * x
 
 // Apply the given interest rate to the given principal amount for the given number of years,
 // then return the resulting balance.
-let interest (principal : float) (rate : float) numYears =
-    Seq.fold (fun bal _ -> bal * (1.0 + rate)) principal (seq {1 .. numYears})
+let interest principal rate numYears =
+    let mutable balance = principal
+    let mutable year = 1
+    while year <= numYears do
+    // In F#, blocks are not denoted by braces; they are denoted by indentation after the "do" keyword.
+    // Each of the following three statements is inside the "while" because they are indented
+    // past the "while"
+        balance <- balance * (1.0 + rate)
+        year <- year + 1
+    balance
+
+
+    
+
+
+
+
     
 
 // What types are the three parameters? Infer it based on the body of the function.
@@ -38,20 +55,32 @@ let toCelcius tempF = (tempF - 32.0) * 5.0 / 9.0
 
 // Challenges:
 // Write a function that concatenates a string with itself.
+let doubleString s = s + s
 
-
-
+doubleString "Hello"
 
 
 // Write a function that finds the harmonic mean of two floating-point numbers.
-
+let harmonicMean a b =
+    2.0 / (1.0 / a + 1.0 / b)
 
 
 
 
 // Write a function that repeats a given string N times, with commas separating each
 // copy of the string.
-
+let repeatString s n =
+    let y = if n <= 0 then
+                ""
+            else
+                let mutable i = 0
+                let mutable answer = s
+                while i < n - 1 do
+            
+                    answer <- answer + "," + s
+                    i <- i + 1
+                answer
+    y
 
 
 
