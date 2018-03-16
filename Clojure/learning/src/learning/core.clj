@@ -64,3 +64,25 @@
   ; likewise or, not
 
 (-main nil)
+
+(let [my-trace {:trace {:base 2
+                        :successful {:effect (req (tag-runner state side 1)
+                                                  (if tagged
+                                                    (damage state side 1 {:card card})
+                                                    nil))}}}]
+{:effect (effect (gain :credit 2)
+                 (resolve-ability my-trace card nil))})
+
+
+(let [damage-or-gain {:delayed-completion true
+                      :effect (req (if tagged
+                                    (damage state side eid 1 {:card card})
+                                    (do (gain state :corp :click 2)
+                                        (effect-completed state side eid))))}
+      my-trace {:trace {:base 2
+                        :successful {:delayed-completion true
+                                     :effect (req (when-completed (tag-runner state side 1)
+                                                                  (continue-ability state side damage-or-gain card nil)))}}}]
+  {:delayed-completion true
+   :effect (effect (gain :credit 2)
+                   (continue-ability my-trace card nil))})

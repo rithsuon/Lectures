@@ -3,9 +3,9 @@
 
 struct Element {
    char name[2];
-   int atomic_number;
+	bool metallic; 
+	int atomic_number;
    double atomic_weight;
-   bool metallic;
 };
 
 

@@ -35,14 +35,10 @@ let answer1 = addOneToTuple (5, 6, 2) // WARNING: do not equate this with "norma
                                       // tuple value, and the function takes only one parameter.
 
 
-// Unpacking can be done directly in the parameter list.
-let betterAddOne (x, y, z) = // a single parameter of type int * int * int
-    (x+1, y+1, z+1)
-    
-
 // So what can we use tuples for, really?
 // 1. To return multiple values from a function, as long as those values aren't better represented
 //    by a new proper type.
+// 2. Another special use we'll see later.
 
 // Attempt to parse a string as an integer. Return a tuple with a boolean indicating whether the
 // parse succeeded, and the parsed integer if the parse succeeded, otherwise 0.

@@ -1,4 +1,4 @@
-  ;; To run this code: open a command prompt to the project directory, then type "lein run"
+;; To run this code: open a command prompt to the project directory, then type "lein run"
 
 (ns blackjack.core
   (:gen-class))
@@ -16,6 +16,7 @@
 
 (defn card-kind [card]
   (second card))
+
 (defn new-deck []
   (for [suit (range 4)
         kind (range 1 14)]
@@ -98,7 +99,7 @@
     (println "Player hand:" (clojure.string/join ", " (map card-string hand))
              ";" score "points")
     (if (< score 21)
-      (let [next-state (interactive-player-strategy game-state)]
+      (let [next-state (greedy-player-strategy game-state)]
         (if (not= (count hand) (count (player-hand next-state)))
           (player-turn next-state)
           next-state))
@@ -107,14 +108,14 @@
 (defn dealer-turn [game-state]
   (let [hand (dealer-hand game-state)
         score (hand-total hand)]
-  (println "Dealer's hand:" (clojure.string/join ", " (map card-string hand))
-           ";" score "points")
-  (let [next-state (dealer-strategy game-state)]
-    (if (and (<= (hand-total (player-hand game-state)) 21)
-             (not= (count hand) (count (dealer-hand next-state))))
-      (do (println "Dealer hits")
-          (dealer-turn next-state))
-      next-state))))
+    (println "Dealer's hand:" (clojure.string/join ", " (map card-string hand))
+             ";" score "points")
+    (let [next-state (dealer-strategy game-state)]
+      (if (and (<= (hand-total (player-hand game-state)) 21)
+               (not= (count hand) (count (dealer-hand next-state))))
+        (do (println "Dealer hits")
+            (dealer-turn next-state))
+        next-state))))
 
 
 ;; Plays one full game of blackjack using the given new game state. Returns 0 if the game is a tie,
@@ -134,14 +135,15 @@
 
 (defn -main
   [& args]
-  (let [winner (one-game (new-game))]
-    (println (case winner
-               1 "Player wins!"
-               -1 "Dealer wins!"
-               :else "Tie game")))
-  )
-  ;(let [totals (map vector (many-games 1000 0 0 0) ["player" "dealer" "tie"])]
-    ;(println totals)))
+  (if false
+    (let [winner (one-game (new-game))]
+      (println (case winner
+                 1 "Player wins!"
+                 -1 "Dealer wins!"
+                 :else "Tie game")))
+
+    (let [totals (map vector (many-games 1000 0 0 0) ["player" "dealer" "tie"])]
+      (println totals))))
 
 
 ;;; Automation
@@ -156,12 +158,12 @@
        (list player-wins dealer-wins ties)
        (many-games
          (- n 1)
-         (if (= winner 1) (+ player-wins 1) player-wins)
-         (if (= winner -1) (+ dealer-wins 1) dealer-wins)
-         (if (= winner 0) (+ ties 1) ties))))))
+         (if (pos? winner) (inc player-wins) player-wins)
+         (if (neg? winner) (inc dealer-wins) dealer-wins)
+         (if (zero? winner) (inc ties) ties))))))
 
 
-  ;;; Strategies.
+;;; Strategies.
 ;;; A strategy is a function that takes the current game state and returns a new game state representing a single
 ;;; decision made by the corresponding player.
 
@@ -176,14 +178,14 @@
 ;; The interactive strategy bases whether to hit or stay on input from the user, unless they are at
 ;; 21 or over.
 (defn interactive-player-strategy [game-state]
-    (if (< (hand-total (player-hand game-state)) 21)
-      (do (println "(h)it or (s)tay?")
-          (flush)
-          (let [input (read-line)]
-            (if (= "h" input)
-              (hit game-state :player)
-              game-state)))
-      game-state))
+  (if (< (hand-total (player-hand game-state)) 21)
+    (do (println "(h)it or (s)tay?")
+        (flush)
+        (let [input (read-line)]
+          (if (= "h" input)
+            (hit game-state :player)
+            game-state)))
+    game-state))
 
 ;; The greedy player strategy always hits until they reach or exceed 21.
 (defn greedy-player-strategy [game-state]
