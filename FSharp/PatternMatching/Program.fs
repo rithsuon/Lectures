@@ -32,13 +32,13 @@ let getPrice food =
 let rec factorial n = 
     match n with
     | 0 -> 1
-    | x -> x  * factorial (n - 1)
+    | x -> x  * factorial (x - 1)
 
 let rec fibonacci n =
     match n with 
     | 0 -> 0
     | 1 -> 1
-    | x -> fibonacci (n - 1) + fibonacci (n - 2)
+    | x -> fibonacci (x - 1) + fibonacci (x - 2)
 
 
 // We can also match on lists
@@ -74,7 +74,7 @@ let getPrice2 = function
     | _ -> nan
 
 // This shortcut syntax actually compiles to this:
-let rec getPrice3 =
+let getPrice3 =
     (fun x ->
         match x with 
         | "banana" -> 0.79
@@ -86,3 +86,31 @@ let rec getPrice3 =
 "watermelon" |> getPrice |> printfn "%f"
 "watermelon" |> getPrice2 |> printfn "%f"
 "watermelon" |> getPrice3 |> printfn "%f"
+
+
+
+// FINALLY, we can pattern match with tuples too.
+let userAccounts = [("Neal", "Faculty", "Computer Science"); ("Anthony", "Faculty", "Computer Science"); 
+                    ("Bob", "Student", "Computer Science"); ("Roberta", "Faculty", "Mathematics")]
+
+let canAccessGrades account =
+    match account with
+    | (_, "Faculty", _) -> true
+    | _ -> false
+
+userAccounts |> List.filter canAccessGrades |> printfn "can access grades: %A"
+
+// Sometimes we want to add a boolean condition to a match; we do this with "when".
+let memberOf department account =
+    match account with
+    | (_, _, dep) when dep = department -> true
+    | _ -> false
+
+// "when" conditions are flexible.
+[(1, 2, 3); (3, 4, 5); (15, 8, 17)] 
+|> List.filter (function
+                | (x, y, z) when pown x 2 + pown y 2 = pown z 2 -> true
+                | _ -> false)
+|> printfn "%A"
+
+userAccounts |> List.filter (memberOf "Computer Science") |> printfn "member of C.S.: %A"
