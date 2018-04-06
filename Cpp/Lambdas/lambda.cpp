@@ -51,6 +51,7 @@ std::function<int(int)> ReturnFunc() {
    auto func = [&local](int param) {
       return local * param;
    };
+	local = 100;
 
    return func;
 }

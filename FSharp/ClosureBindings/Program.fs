@@ -1,10 +1,14 @@
 ﻿let outerFunc outerParam =
     let outerLocal = outerParam
 
-    let innerFunc innerParam =
-        outerLocal * innerParam + outerParam
+    let innerFunc = fun innerParam ->
+                        outerLocal * innerParam + outerParam
 
     innerFunc
+
+let whatAmI = outerFunc 100
+
+whatAmI 5 |> printfn "%d"
 
 // What type is innerFunc?
 

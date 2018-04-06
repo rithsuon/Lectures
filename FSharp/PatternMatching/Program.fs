@@ -90,8 +90,10 @@ let getPrice3 =
 
 
 // FINALLY, we can pattern match with tuples too.
-let userAccounts = [("Neal", "Faculty", "Computer Science"); ("Anthony", "Faculty", "Computer Science"); 
-                    ("Bob", "Student", "Computer Science"); ("Roberta", "Faculty", "Mathematics")]
+let userAccounts = [("Neal", "Faculty", "Computer Science"); 
+                    ("Anthony", "Faculty", "Computer Science"); 
+                    ("Bob", "Student", "Computer Science"); 
+                    ("Roberta", "Faculty", "Mathematics")]
 
 let canAccessGrades account =
     match account with
@@ -113,4 +115,6 @@ let memberOf department account =
                 | _ -> false)
 |> printfn "%A"
 
-userAccounts |> List.filter (memberOf "Computer Science") |> printfn "member of C.S.: %A"
+userAccounts 
+|> List.filter (memberOf "Computer Science") 
+|> printfn "member of C.S.: %A"

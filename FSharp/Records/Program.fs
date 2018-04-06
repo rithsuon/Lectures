@@ -42,11 +42,11 @@ let vecLat2 = csulb.lat
 
 // We can write functions on records, naturally.
 let hemisphereNS geo =
-    let { lat = lat1 } = geo
+    // let { lat = lat1 } = geo
     // use the spherial law of cosines
-    if lat1 > 0.0 then
+    if geo.lat > 0.0 then
         "Northern"
-    elif lat1 < 0.0 then
+    elif geo.lat < 0.0 then
         "Southern"
     else
         "Equatorial"
