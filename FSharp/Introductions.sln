@@ -11,8 +11,6 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Collections", "Collections\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FirstClass", "FirstClass\FirstClass.fsproj", "{FD920F3D-1979-4B61-A445-0BD853E74BA0}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BombGame", "BombGame\BombGame.fsproj", "{897B5018-7BBD-489B-8ECF-5BBAE4ED9318}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tuples", "Tuples\Tuples.fsproj", "{ABC7AA2D-EF0C-4D90-922A-7ADB723FBB47}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ClosureBindings", "ClosureBindings\ClosureBindings.fsproj", "{73183DE1-A3D2-4839-B5B9-E1C6378729DD}"
