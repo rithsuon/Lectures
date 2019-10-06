@@ -23,21 +23,7 @@ let square x = x * x
 // Apply the given interest rate to the given principal amount for the given number of years,
 // then return the resulting balance.
 let interest principal rate numYears =
-    let mutable balance = principal
-    let mutable year = 1
-    while year <= numYears do
-    // In F#, blocks are not denoted by braces; they are denoted by indentation after the "do" keyword.
-    // Each of the following three statements is inside the "while" because they are indented
-    // past the "while"
-        balance <- balance * (1.0 + rate)
-        year <- year + 1
-    balance
-
-
-    
-
-
-
+    principal * ((1.0 + rate) ** (float numYears))
 
     
 
@@ -48,40 +34,37 @@ let interest principal rate numYears =
 // and int; and returning float.
 
 
+// Lesson: numeric types are assumed to be int unless proven otherwise.
+
+
 
 // Convert Fahrenheit degrees to Celcius
-let toCelcius tempF = (tempF - 32.0) * 5.0 / 9.0
+let toCelcius tempF = 
+    (tempF - 32.0) * 5.0 / 9.0
 
 
 // Challenges:
 // Write a function that concatenates a string with itself.
-let doubleString s = s + s
+// Hint: we use + for concatentation.
+let doubleString s = 
+    None
 
-doubleString "Hello"
+// Lesson: types can be inferred based on usage, not only based on declaration.
+
 
 
 // Write a function that finds the harmonic mean of two floating-point numbers.
 let harmonicMean a b =
-    2.0 / (1.0 / a + 1.0 / b)
+    None
 
 
 
 
-// Write a function that repeats a given string N times, with commas separating each
-// copy of the string.
-let repeatString s n =
-    let y = if n <= 0 then
-                ""
-            else
-                let mutable i = 0
-                let mutable answer = s
-                while i < n - 1 do
-            
-                    answer <- answer + "," + s
-                    i <- i + 1
-                answer
-    y
+// Write a function that returns the absolute value of an integer.
+let absoluteValue x =
+    None
 
+// Lesson: "if" is an expression, not a statement.
 
 
 
@@ -104,5 +87,6 @@ let main argv =
 
     printfn "90 degrees F = %0.1f degrees C" (toCelcius 90.0)    
 
-    
+    printfn "abs(-12) = %d" (absoluteValue -12)
+
     0 // return an integer exit code

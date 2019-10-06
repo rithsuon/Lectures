@@ -1,17 +1,22 @@
-﻿// A sequence is an immutable, iterable collection of values with no concern for how the values
+﻿// A sequence is an iterable collection of homogenous values with no concern for how the values
 // are represented in the sequence. 
 
-// There are many helpers to define sequences. The simplest is the seq keyword.
+// "collection": a bunch of data values. 
+// "homogenous": all the values in the sequence are the same type.
+// "iterable": we can use an Iterator to access one element in the sequence and then move
+//      on to the "next" value in the sequence.
 
-let mySeq = seq {yield 1; yield 2; yield 3}
+// The seq<T> type represents a sequence of values of type T, e.g., seq<int>
 
-// This sequence contains 3 values, and can be iterated over using a for loop.
+// A sequence can be used in a "for" loop, very similar to Python's for loop and Java's
+// "enhanced for loop".
 let printSequence s =
     for i in s do
         printfn "%d" i
-// Fun fact: the type annotation isn't necessary...
+        // What type is i?
+        // Therefore what type does the sequence s contain?
+        // Therefore what type is s?
 
-printSequence mySeq
 
 // A shortcut lets us define sequences over ranges.
 let longSeq = seq {1 .. 1000}
@@ -27,7 +32,7 @@ printSequence longSeq
 // A list is an immutable collection of homogenous data stored as a persistent linked list.
 let list1 = [1; 2; 3] // square brackets and semicolons
 let list2 = 4 :: list1 // :: is "cons" ; create a new list by placing a new 
-                         // head on an existing list
+                       // head on an existing list
 
 let list3 = list1 @ list2 // @ is "concat": concatenate/append two lists
 
@@ -36,7 +41,7 @@ printSequence list1
 
 // Lists have "properties" accessed with "." syntax, like in Java/C#. 
 
-printfn "list1.Head: %d\n" list1.Head // Head is "first"
+printfn "list1.Head: %d" list1.Head // Head is "first"
 printfn "list1.Tail:" 
 printSequence list1.Tail
 
@@ -44,10 +49,6 @@ printSequence list1.Tail
 // Jump over to "Generics.fs" first
 
 
-
-
-
-let identity x = x
 
 
 
@@ -86,7 +87,14 @@ let third coll =
 
 // So get ".Head" and ".Tail" out of your brain. That's imperative-style thinking. Think functionally!!
 
-// All the parens in third are making me dizzy. I thought we were done with Lisp!
+
+
+// All the parens in third are making me dizzy. They are necessary to force order-of-execution, but
+// they make it much harder to read the statement because the LAST function to be executed (List.head)
+// comes FIRST in the statement! You're used to this as an imperative programmer, but it's a major
+// point of confusion for new programmers.
+
+
 // Enter the |> operator, F#'s "pipe forward" operator. |> is an infix operator that takes a value and a 
 // function. The value is passed to the function as the last parameter.
 let third2 coll =
@@ -114,7 +122,7 @@ let startsWith h coll =
 printfn "startsWith list1 5: %O" (startsWith 1 list1)
 
 // You know what's coming next.... recursive functions on lists!
-
+// A recursive function includes the "rec" keyword in its declaration.
 let rec contains v coll =
     if List.isEmpty coll then
         false
