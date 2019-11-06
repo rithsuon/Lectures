@@ -6,7 +6,7 @@
 
 (defn -main
   [& args]
-  (let [mylist '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)]
+  (let [mylist (list 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)]
     ;; (filter f coll)
     ;; return a new list only containing elements of coll for which f evaluates to true
     (println (filter even? mylist))
