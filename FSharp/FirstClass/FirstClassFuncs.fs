@@ -18,10 +18,19 @@ let list1 = [1; 2; 3; 4; 5; 6; 7; 8; 9]
 
 printfn "%A" (List.filter isEven list1) // %O only prints first three elements; %A prints all
 // Or, with piping:
-list1 |> List.filter isEven |> printfn "%A"
+list1 
+|> List.filter isEven 
+|> printfn "%A"
 
 
 // What is the TYPE of List.filter? Hint: combine what we know about generics and function types.
+
+
+
+
+
+// Can we WRITE List.filter???
+
 
 
 
@@ -33,6 +42,12 @@ list1
 |> printfn "The even values, each squared: %A"
 
 
+// And fold, as List.reduce
+list1
+|> List.filter isEven
+|> List.map square
+|> List.reduce (+)
+|> printfn "The sum of those values is: %A"
 
 
 // Finally, how can functions be "dynamically created"? Two ways:
