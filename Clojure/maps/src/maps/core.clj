@@ -3,9 +3,12 @@
 
 ; a map is a dictionary: a data structure that associates a key with a value.
 ; {} creates a map; adjacent values in the map declare a key-value pair.
-(def film {:title "WALL-E" :year 2008 :produced-by "Jim Morris"
-           :production-company "Pixar Animation Studios"
-           :budget 180000000 :earnings 521300000 :running-time 98})
+(def film {:title "WALL-E", ; the commas are optional but can aid readability.
+           :year 2008 :produced-by "Jim Morris",
+           :production-company "Pixar Animation Studios",
+           :budget 180000000,
+           :earnings 521300000,
+           :running-time 98})
 
 ; a : in front of an identifier creates a "keyword". think of these as strings for now.
 
@@ -47,9 +50,7 @@
 
   (prn (map #(double (/ (:earnings %) (:budget %))) disney)) ; earnings to budget ratios
 
-  (prn (reduce #(+ %1 (:earnings %2)) 0 disney))
-  ; a second way...
-  (prn (reduce + 0 (map :earnings disney)))
+  (prn (reduce + 0 (map :earnings disney))) ; sum of all earnings
 
 
   ; other useful things
@@ -60,10 +61,11 @@
   (prn (sort-by :budget < disney)) ; sort the films by budget, decreasing order
 
   ; challenge: return only the titles of the movies, sorted in decreasing order by earnings
-  (prn (map :title (sort-by :earnings > (filter #(= (:production-company %) "Pixar Animation Studios") disney))))
+  
 
 
   ; challenge: return only the titles of PIXAR movies, sorted in increasing order by budget
+
 
 
   )
