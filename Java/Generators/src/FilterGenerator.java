@@ -1,33 +1,48 @@
 import java.util.function.Predicate;
-public class FilterGenerator<T> implements Generator<T> {
-   private Generator<T> mSource;
+import java.util.Iterator;
+public class FilterGenerator<T> implements Iterable<T> {
+   private Iterable<T> mSource;
    private Predicate<T> mPredicate;
-   private T mNext;
    
-   public FilterGenerator(Predicate<T> pred, Generator<T> source) {
+   public FilterGenerator(Predicate<T> pred, Iterable<T> source) {
       mSource = source;
       mPredicate = pred;
-      
-      mNext = findNext();
    }
-   
-   private T findNext() {
-      while (mSource.hasNext()) {
-         T temp = mSource.next();
-         if (mPredicate.test(temp)) {
-            return temp;
-         }
+
+   public Iterator<T> iterator() {
+      return new FilterIterator();
+   }
+
+   private class FilterIterator implements Iterator<T> {
+      private T mNext;
+      private Iterator<T> mIter;
+
+      public FilterIterator() {
+         mIter = mSource.iterator();
       }
-      return null;
-   }
-   public boolean hasNext() {
-      return mNext != null;
-   }
    
-   public T next() {
-      T temp = mNext;
-      System.out.println("Filtered: " + temp);
-      mNext = findNext();
-      return temp;
+      private T findNext() {
+         while (mIter.hasNext()) {
+            T temp = mIter.next();
+            if (mPredicate.test(temp)) {
+               return temp;
+            }
+         }
+         return null;
+      }
+
+      public boolean hasNext() {
+         if (mIter.hasNext() && mNext == null) {
+            mNext = findNext();
+         }
+         return mNext != null;
+      }
+      
+      public T next() {
+         System.out.println("Filter found " + mNext);
+         T temp = mNext;
+         mNext = null;
+         return temp;
+      }
    }
 }

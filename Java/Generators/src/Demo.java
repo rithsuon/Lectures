@@ -1,21 +1,34 @@
 public class Demo {
    public static void main(String[] args) {
       System.out.println("Constructing range");
-      RangeGenerator range = new RangeGenerator(1, 14);
+      RangeGenerator range = new RangeGenerator(0, 100000);
       System.out.println("Constructing filter");
-      Generator<Integer> filter = 
-         new FilterGenerator<Integer>(
+      Iterable<Integer> filter =
+         new FilterGenerator<>(
             (i) -> i % 5 == 0, 
             range);
       
       System.out.println("Constructing map");
-      Generator<Double> map =
-         new MapGenerator<Integer, Double>(
+      Iterable<Double> map =
+         new MapGenerator<>(
             (i) -> Math.sqrt(i),
             filter);
+            
       
-      while (map.hasNext()) {
-         System.out.println(map.next());
+      System.out.println("Iterating through sequence");
+      for (Double x : new TakeGenerator<>(4, map)) {
+         System.out.println("Sequence element: " + x);
+      }
+
+      System.out.println();
+      System.out.println("Let's do it again!");
+      Iterable<Double> second = 
+         Seq.take(3, 
+            Seq.map((i) -> Math.sqrt(i), 
+               Seq.filter((i) -> i % 5 == 0,
+                  Seq.range(0, 100000))));
+      for (Double x : second) {
+         //System.out.println(x);
       }
    }
 }
