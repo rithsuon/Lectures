@@ -27,8 +27,8 @@ public class Demo {
             Seq.map((i) -> Math.sqrt(i), 
                Seq.filter((i) -> i % 5 == 0,
                   Seq.range(0, 100000))));
-      for (Double x : second) {
-         //System.out.println(x);
-      }
+      
+      System.out.println(Seq.reduce((a, b) -> a + b, 0.0, second));
+      
    }
 }
