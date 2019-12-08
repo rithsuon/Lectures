@@ -175,10 +175,13 @@
   ;; TODO: replace the 0 on the next line with the card-str of the dealer's first card.
   (println "Dealer is showing: " 0)
 
-  ;; TODO: play the game! First the player gets their turn. The dealer then takes their turn,
-  ;; using the state of the game after the player's turn finished.
+  ;; TODO: check if the dealer has a "natural blackjack", i.e., if their hand total is 21.
+  ;; If they do, the game is over! The dealer wins automatically, unless the player also has
+  ;; a natural blackjack, in which case the game is a draw.
 
-
+  ;; TODO: If the dealer doesn't have a natural, then play the game! First the player gets 
+  ;; their turn. The dealer then takes their turn, using the state of the game after the 
+  ;; player's turn finished.
 
   ;; TODO: determine the winner! Get the hand scores for the dealer and the player.
   ;; The player wins if they did not bust (score <= 21) AND EITHER:
