@@ -87,6 +87,6 @@ let main argv =
 
     printfn "90 degrees F = %0.1f degrees C" (toCelcius 90.0)    
 
-    printfn "abs(-12) = %d" (absoluteValue -12)
+    // printfn "abs(-12) = %d" (absoluteValue -12)
 
     0 // return an integer exit code

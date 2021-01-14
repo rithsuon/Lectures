@@ -1,5 +1,9 @@
-﻿// F# is a multi-paradigm language. It combines aspects of imperative, functions, OO, and scripting
+﻿open System // like an import statement
+
+// F# is a multi-paradigm language. It combines aspects of imperative, functional, OO, and scripting
 // languages.
+
+// We will start learning the imperative/scripting side of F#, and later move into functional programming.
 
 // Functions are invoked by their name followed by their arguments, with no commas or parentheses.
 printfn "Hello world."
@@ -46,4 +50,21 @@ printfn "x is now %d" x // what does this print?
 
 // Outside of a declaration, = is used for comparison; it is not for assignment.
 // F# variables cannot be assigned new values after they are declared...
-// but more on that later.
+//   for a few more minutes
+
+let age = 37
+// if, elif, else statements
+if age < 10 then
+    printfn "You are young"
+elif age < 40 then
+    printfn "You are getting older..."
+else
+    printfn "You old"
+
+
+// while loops
+// How does one have a while loop without mutable values? So let's introduce those too.
+let mutable i = 0
+while i < 10 do
+    printfn "%d" i
+    i <- i + 1 // <- is for reassignment / mutation
