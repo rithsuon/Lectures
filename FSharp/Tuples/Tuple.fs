@@ -5,7 +5,7 @@ let dinner = ("green eggs", "ham") // commas separate tuples, semicolons separat
 // The type of dinner is "string * string", indicating a tuple of two string values.
 
 // Tuples can contain any data type, including other tuples.
-let nested = (1, (2.0, [3; 4; 5]), (4L, "5", '6'))
+let nested = (1, (2.0, (3, 4, 5)), (4L, "5", '6'))
 // What type is nested?
 
 // If a tuple is a pair, then you can use the functions "fst" and "snd" to retrieve 
@@ -49,4 +49,9 @@ let tryParseInt str =
     with _ -> (false, 0) // this is "catch any exception, and do this->".
 
 let (success, value) = tryParseInt "100"
+if success then
+    printfn "We parsed the value %d" value
+
 let (success2, value2) = tryParseInt "99x"
+if success2 then
+    printfn "We then parsed the value %d" value2
