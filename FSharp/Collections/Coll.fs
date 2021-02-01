@@ -140,6 +140,32 @@ let rec take n coll =
     else
         List.head coll :: take (n - 1) (List.tail coll)
 
+        
+// We can also match on lists
+let isEmpty coll =
+    match coll with
+    | [] -> true
+    | _  -> false
+        
+[1; 2; 3] |> isEmpty |> printfn "%O" // prints false
+        
+let rec last coll =
+    match coll with
+    | [x] -> x
+    | h :: t -> last t
+        
+[1; 2; 3] |> last |> printfn "%d" // prints 3
+        
+        
+let rec skip n coll =
+    match n with
+    | 0 -> coll
+    | _ -> skip (n - 1) (List.tail coll)
+        
+[1; 2; 3; 4] |> skip 2 |> printfn "%A" // CURRYING: prints [3; 4]
+        
+        
+
 
 
 
