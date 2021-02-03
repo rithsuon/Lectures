@@ -41,17 +41,18 @@ let rec fibonacci n =
 
 
 // FINALLY, we can pattern match with tuples too.
-let userAccount1 = ("Neal Terrell", "Faculty", "Computer Science")
-let userAccount2 = ("Roberta Draper", "Gunnery Sergeant", "Martian Marine Corps")
+let userAccount1 = ("Naomi Nagata", "Engineering")
+let userAccount2 = ("James Holden", "Command")
+let userAccount3 = ("Roberta Draper", "Security")
 
-let canAccessGrades account =
+let canAccessReactor account =
     match account with
-    | (_, "Faculty", _) -> true
+    | (_, "Engineering") -> true
+    | (_, "Command") -> true
     | _ -> false
-
 
 // Sometimes we want to add a boolean condition to a match; we do this with "when".
 let memberOf department account =
     match account with
-    | (_, _, dep) when dep = department -> true
+    | (_, dep) when dep = department -> true
     | _ -> false
