@@ -2,7 +2,8 @@
 
 
 // This function returns its parameter.
-let identity x = x
+let identity x = 
+    x
 
 // identity works with any type of data:
 printfn "%O" (identity 5) // %O prints an object, and provides no type hints at all.
@@ -19,3 +20,10 @@ printfn "%O" (identity [1; 2; 3])
 
 // Thus, identity 5 calls a function on int->int, identity "Hello" calls string->string, etc.
 
+
+// Any reason this code should only work with lists of integers?
+let secondInt (coll : int list) =
+    coll.Tail.Head
+
+let secondList (coll : 'a list) =
+    coll.Tail.Head
