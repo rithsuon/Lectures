@@ -9,7 +9,7 @@ printfn "list2.Tail: %O" list1.Tail  // output: [2; 3]
 printfn "list2's third element: %d" list1.Tail.Tail.Head  // output: 2
 
 // We can write a "get-index" function with mutation...
-let getIndex index  (coll : int list) =
+let getIndex index (coll : int list) =
     let mutable node = coll
     let mutable counter = 0
     while counter < index do
@@ -17,6 +17,7 @@ let getIndex index  (coll : int list) =
         counter <- counter + 1
     
     node.Head
+
 
 // But it only works with int lists!
 // Head to Generics project and then return here.
@@ -39,6 +40,7 @@ let third3 coll =
     // what type is coll?
     // And what type is returned from the function?
 
+
 // We have the motivation now to introduce one of my favorite parts of F#, the humble
 // pipe-forward operator |>. 
 // One way to call the function "f" with parameter "x" is: f x
@@ -58,9 +60,10 @@ let third4 coll =
 // ULTIMATE GOAL: WHEN REVIEWING THIS LESSON, THIS IS WHAT YOU WANT TO UNDERSTAND:
 let third5 coll =
     coll
-    |> List.tail
-    |> List.tail
-    |> List.head
+    |> List.tail   // List.tail coll
+    |> List.tail   // List.tail (List.tail coll)
+    |> List.head   // List.head (List.tail (List.tail coll))
+    
     // coll is passed to List.tail; the result is passed to List.tail; the result
     // is passed to List.head.
 
@@ -71,6 +74,7 @@ let inputFloat = System.Console.ReadLine() |> float // don't need parens now.
 
 // Take the third element of the list, convert to float, square root it, log it, then print.
 list1 |> third |> float |> System.Math.Sqrt |> System.Math.Log |> printfn "%f"
+
 // Compare to the imperative (C/Java/imperative F#) way of calling that:
 printfn "%f" (System.Math.Log (System.Math.Sqrt (float (third list1))))
 
@@ -95,12 +99,21 @@ list1
 // generics and... matching!
 let isEmpty coll = 
     match coll with
-    // can match with list literals, like [] 
     | [] -> true // an empty list is empty
     // can match list patterns; [x] matches any one-element list. (but not one of 2+ elements).
-    | [x] -> false // a one-element list is not empty
+    // | [x] -> false // a one-element list is not empty
     // as always, _ matches anything
     | _ -> false
+
+    // contains 10 [5; 6; 10; 12]
+let rec contains x coll =
+    match coll with
+    | [] -> false
+    | h :: t -> h = x || contains x t
+
+
+
+
 
 // And once recursion gets involved...
 let rec lastElement coll =

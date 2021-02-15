@@ -2,10 +2,10 @@
 #include <stdbool.h>
 
 struct Element {
-	char name[2];
-	int atomic_number;
-	double atomic_weight;
-	bool metallic;
+	char name[2];  // char = 1byte  -> 2byte
+	int atomic_number; // 4 byte
+	double atomic_weight; // 8 byte
+	bool metallic; // 1 byte
 };
 
 

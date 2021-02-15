@@ -4,6 +4,8 @@
 let dinner = ("green eggs", "ham") // commas separate tuples, semicolons separate lists
 // The type of dinner is "string * string", indicating a tuple of two string values.
 
+let another = (1, 2)
+
 // Tuples can contain any data type, including other tuples.
 let nested = (1, (2.0, (3, 4, 5)), (4L, "5", '6'))
 // What type is nested?
@@ -13,13 +15,12 @@ let nested = (1, (2.0, (3, 4, 5)), (4L, "5", '6'))
 let meal1 = fst dinner
 let meal2 = snd dinner
 
-// let nestedPair = snd nested // ERROR: nested has length 3, not 2.
+//let nestedPair = snd nested // ERROR: nested has length 3, not 2.
 
 // So how to access the elements of a longer tuple?
 let placings = ("Katie Ledecky", "Sarah Sjöström", "Emma McKeon", "Frederica Pellegrini")
 let (gold, silver, bronze, _) = placings
 // This is called "unpacking". The parentheses are optional. The underscore means "don't care."
-
 
 // Tuples are useful for gluing together values when you don't want to have to create a new
 // datatype. They have good performance in F#, but they aren't a replacement for classes.

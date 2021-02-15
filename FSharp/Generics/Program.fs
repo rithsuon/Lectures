@@ -25,5 +25,14 @@ printfn "%O" (identity [1; 2; 3])
 let secondInt (coll : int list) =
     coll.Tail.Head
 
+
+
+
+
+
+
+
+
+
 let secondList (coll : 'a list) =
     coll.Tail.Head
