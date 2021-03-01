@@ -1,110 +1,61 @@
-﻿// It should not surprise you that functions are first class in F#.
+﻿// A first-class member can:
+// 1. Be assigned to a variable.
+
+let max a b = if a > b then a else b
+let remainder dividend divisor = dividend % divisor
 
 let f = max
-// f is of type int->int->int
-f 10 5 |> printfn "%d"
+// f is a *variable*. What is its type?
+
+// What can we do with a function variable? Call it!
+f 10 5 |> printfn "%d is the max"
 
 
-// square is of type int->int
-let square x = x * x
+// 2. Be passed as a parameter to a function.
+let useIntegers a b f =
+    if a < 0 then 
+        b + 1
+    else
+        f a b
 
-// isEven is of type int->bool
-let isEven n = 
-    n % 2 = 0
-
-// The List type has a function called "filter" which... you guessed it! Filters a list.
-
-let list1 = [1; 2; 3; 4; 5; 6; 7; 8; 9]
-
-printfn "%A" (List.filter isEven list1) // %O only prints first three elements; %A prints all
-// Or, with piping:
-list1 
-|> List.filter isEven 
-|> printfn "%A"
+// Perform type inference on this function and its parameters.
+// What type is.... a?
+//             .... b?
+//             .... f?
+//             .... useIntegers?
 
 
-// What is the TYPE of List.filter? Hint: combine what we know about generics and function types.
+// 3. Be returned from a function.
+let selectIntFunction a =
+    if a < 0 then
+        max
+    else
+        remainder
+
+// What type is selectIntFunction?
+
+// Putting it together...
+5
+|> selectIntFunction
+|> useIntegers 5 4
+|> printfn "result: %d"
 
 
+// 4. Be created dynamically at run-time.
+let input = System.Console.ReadLine() |> int
+let runtimeFunction =
+    if input > 0 then
+        // the "fun" keyword creates an anonymous function.
+        // it has no names, just arguments and a body.
+        // like all functions, it returns the last statement in the body.
+        (fun x y -> x + y)
+    else
+        (fun x y -> x - y)
 
+// What type is runtimeFunction?
+// Do we know *right now* which function body will be called?
+// But can we use it anyway? Yes!
 
-
-// Can we WRITE List.filter???
-
-
-
-
-
-// We also have List.map.
-list1
-|> List.filter isEven
-|> List.map square
-|> printfn "The even values, each squared: %A"
-
-
-// And fold, as List.reduce
-list1
-|> List.filter isEven
-|> List.map square
-|> List.reduce (+)
-|> printfn "The sum of those values is: %A"
-
-
-// Finally, how can functions be "dynamically created"? Two ways:
-// As an anonymous function with the "fun" keyword
-printfn "%A" (List.filter (fun x -> x % 2 = 1) list1)
-
-list1
-|> List.filter (fun x -> x % 2 = 1)
-|> List.map square
-|> printfn "The odd values, each squared: %A"
-
-
-
-
-// An example with strings
-let list2 = ["Neal"; "Mehrdad"; "Shannon"; "Josh"; "Anthony"]
-
-// Unfortunately the next line does not compile
-// printfn "%A" (List.filter (fun x -> x.Length > 4) list2)
-// WHy not?
-
-
-// Piping can help fix that
-list2 
-|> List.filter (fun x -> x.Length > 4)
-|> printfn "Names longer than 4 letters: %A"
-
-
-
-// As inner functions:
-let getAdder baseVal =
-    let adder x =
-        baseVal + x
-    adder
-
-// Examine the type of getAdder: int -> (int -> int)
-// getAdder returns a function that takes an int and returns an int...
-// but how is the return value of that function calculated? It uses baseVal's value
-// when getAdder is actually invoked. That is a DYNAMIC value that is not known until
-// runtime, so the behavior of the resulting function won't be known until runtime. 
-
-
-// To use it:
-let addBy5 = getAdder 5
-addBy5 10 |> printfn "5 + 10 = %d"
-
-// Calling getAdder multiple times will result in multiple copies of "adder" being
-// created, each with a different value of "baseVal".
-let addBy100 = getAdder 100
-addBy100 10 |> printfn "100 + 10 = %d"
-
-
-// This may be troubling... how does it POSSIBLY work?
-
-
-
-
-
-
-
+runtimeFunction
+|> useIntegers -5 10
+|> printfn "runtime result: %d"

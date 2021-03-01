@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Introduction", "Introduction\Introduction.fsproj", "{D26907B2-1C9D-408C-A52C-7CCF037E8B18}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Immutability", "Immutability\Immutability.fsproj", "{07BA80B9-C0FB-4D1E-8913-2742B3D6E87A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Blackjack", "Blackjack\Blackjack.fsproj", "{A1199B6D-2942-4964-8839-20054363C3A5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "HigherOrder", "HigherOrder\HigherOrder.fsproj", "{BA5ED406-8CAC-4A4C-8ED9-56EB6CE2752F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{A1199B6D-2942-4964-8839-20054363C3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1199B6D-2942-4964-8839-20054363C3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1199B6D-2942-4964-8839-20054363C3A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA5ED406-8CAC-4A4C-8ED9-56EB6CE2752F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA5ED406-8CAC-4A4C-8ED9-56EB6CE2752F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA5ED406-8CAC-4A4C-8ED9-56EB6CE2752F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA5ED406-8CAC-4A4C-8ED9-56EB6CE2752F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
