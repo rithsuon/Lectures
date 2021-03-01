@@ -93,7 +93,7 @@ let rec listCountRecursive x coll =
 
 let countListTail x coll =
     
-    let rec countListImpl x coll acc =  // acc = "the count of the elements that came before this list"
+    let rec countListImpl x coll acc =  // acc = "the count of the number of x's that came before this list"
         match coll with 
         | []                -> acc // if we've reached an empty list, return the count of the elements that came before this (all of them).
                                    // otherwise, recurse on the tail. The count of the elements that came before t is:
