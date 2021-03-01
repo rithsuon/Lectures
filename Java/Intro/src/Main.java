@@ -9,13 +9,15 @@ public class Main {
       int selection = s.nextInt();
       // Why don't we use "new" with this int variable?
       
-      List myList;
+      List<Integer> myList;
+      // Why "Integer" and not "int"?
+      
       
       // Where are these objects placed in memory? Why?
       if (selection % 2 == 0)
-         myList = new ArrayList();
+         myList = new ArrayList<Integer>(); 
       else
-         myList = new LinkedList();
+         myList = new LinkedList<Integer>();
       
       
       // How does the program decide which version of this List method to call

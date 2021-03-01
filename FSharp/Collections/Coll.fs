@@ -30,23 +30,36 @@ printSequence longSeq
 
 
 // A list is an immutable collection of homogenous data stored as a persistent linked list.
-let list1 = [1; 2; 3] // square brackets and semicolons
+let list1 = [1; 2; 3]  // square brackets and semicolons
+
+
+
+
+
 let list2 = 4 :: list1 // :: is "cons" ; create a new list by placing a new 
                        // head on an existing list
 
 let list3 = list1 @ list2 // @ is "concat": concatenate/append two lists
 
-// Lists are sequences, so we can pass them to a function taking a seq.
-printSequence list1
-
 // Lists have "properties" accessed with "." syntax, like in Java/C#. 
 
-printfn "list1.Head: %d" list1.Head // Head is "first"
-printfn "list1.Tail:" 
-printSequence list1.Tail
+printfn "list1.Head: %d" list1.Head // output: 1
+printfn "list2.Tail: %O" list1.Tail  // output: [2; 3]
+printfn "list2's third element: %d" list1.Tail.Tail.Head  // output: 2
 
 
-// Jump over to "Generics.fs" first
+let getIndex (list : int list) index =
+    let mutable node = list
+    let mutable counter = 0
+    while counter < index do
+        node <- node.Tail
+        counter <- counter + 1
+    
+    node.Head
+
+// node is now at index 100 element
+
+
 
 
 
@@ -139,6 +152,32 @@ let rec take n coll =
         []
     else
         List.head coll :: take (n - 1) (List.tail coll)
+
+        
+// We can also match on lists
+let isEmpty coll =
+    match coll with
+    | [] -> true
+    | _  -> false
+        
+[1; 2; 3] |> isEmpty |> printfn "%O" // prints false
+        
+let rec last coll =
+    match coll with
+    | [x] -> x
+    | h :: t -> last t
+        
+[1; 2; 3] |> last |> printfn "%d" // prints 3
+        
+        
+let rec skip n coll =
+    match n with
+    | 0 -> coll
+    | _ -> skip (n - 1) (List.tail coll)
+        
+[1; 2; 3; 4] |> skip 2 |> printfn "%A" // CURRYING: prints [3; 4]
+        
+        
 
 
 

@@ -23,22 +23,12 @@ let vecLat2 = csulb.lat
 // We can write functions on records, naturally.
 let hemisphereNS geo =
     // let { lat = lat1 } = geo
-    // use the spherial law of cosines
     if geo.lat > 0.0 then
         "Northern"
     elif geo.lat < 0.0 then
         "Southern"
     else
         "Equatorial"
-
-// As a shortcut, we can deconstruct in the function signature
-let hemisphereEW { long = long1 } =
-    if long1 > 0.0 then
-        "East"
-    elif long1 < 0.0 then
-        "West"
-    else
-        "Prime Meridian"    
 
 
 // There's a ton more that we could do here, but this suffices for now.
