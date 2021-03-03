@@ -41,7 +41,9 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Blackjack", "Blackjack\Blac
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.fsproj", "{1D8C4037-CFEC-42B0-A8B6-D844B1A689E8}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Lists", "Lists\Lists.fsproj", "{0B3330D6-B03A-4066-B768-714BA0FCF584}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Lists", "Lists\Lists.fsproj", "{0B3330D6-B03A-4066-B768-714BA0FCF584}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "HigherOrder", "HigherOrder\HigherOrder.fsproj", "{A9FCD5BA-CE77-4204-A7FF-5F5B67FB5881}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{0B3330D6-B03A-4066-B768-714BA0FCF584}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B3330D6-B03A-4066-B768-714BA0FCF584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B3330D6-B03A-4066-B768-714BA0FCF584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FCD5BA-CE77-4204-A7FF-5F5B67FB5881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FCD5BA-CE77-4204-A7FF-5F5B67FB5881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FCD5BA-CE77-4204-A7FF-5F5B67FB5881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FCD5BA-CE77-4204-A7FF-5F5B67FB5881}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,8 +10,9 @@ int main() {
 	int (*fp)(int, int) = max; // you've seen this syntax before. ugly!
 	printf("max: %d\n", fp(10, 5));
 
+	printf("max: %d\n", applyFunction(max, 10, 5));
 
-
+	int r = getFunction()(19, 5);
 	return 0;
 }
 

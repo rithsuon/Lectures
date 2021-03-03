@@ -26,5 +26,5 @@ class FirstClass {
        // For dynamic-created functions at run time, we use lambda syntax:
        f = (a, b) -> a > b ? a : b; // now f is "max".
        System.out.println(f.apply(10, 5));
-    } 
+    }
 }
