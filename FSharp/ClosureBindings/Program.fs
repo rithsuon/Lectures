@@ -1,33 +1,72 @@
-﻿let outerFunc outerParam =
-    let outerLocal = outerParam
+﻿// Inner functions can use any variable that is visible in the outer scope.
+let fold combiner initial coll =
+    let rec foldImpl coll acc =
+        match coll with
+        | [] -> acc
+        // we can use combiner even though it's not a parameter to foldImpl
+        | h :: t -> foldImpl t (combiner acc h)
 
-    let innerFunc = fun innerParam ->
-                        outerLocal * innerParam + outerParam
-
-    innerFunc
-
-let whatAmI = outerFunc 100
-
-whatAmI 5 |> printfn "%d"
-
-// What type is innerFunc?
-
-// What type is outerFunc?
-
-let closureFunc = outerFunc 5
-closureFunc 10 |> printfn "%d"
-// What do we expect to print?
+    foldImpl (List.tail coll) initial
 
 
-let outerFunc2 outerParam =
-    let mutable outerLocal = outerParam
+// return true if a value larger than x is in coll.
+let findSomethingLarger x coll =
+    // we can use x even though it's not a parameter to the anonymous function
+    List.find (fun i -> i > x) coll
 
-    let innerFunc innerParam =
-        outerLocal * innerParam + outerParam
 
-    let returnValue = innerFunc
-    outerLocal <- 100
-    returnValue
+// getAdder: returns a function that adds 2*x to its parameter.
+let getAdder x =
+    let z = x * 2
+    // z is a local variable. It can only be accessed from within this function, just
+    // like the parameter x.
 
-let closure2 = outerFunc2 5
-closure2 10 |> printfn "%d"
+    fun y -> y + z
+
+// What type is getAdder?
+
+
+// When we call getAdder 10, we conceptually get back: a function that adds 20 to its parameter.
+let adderFunc = getAdder 10
+// We can invoke that function:
+adderFunc 5 
+|> printfn "%d" // and expect it to print 25.
+
+// But something strange is going on...
+// The variable z only exists when we're in scope of getAdder.
+// By returning the anonymous function, we leave that scope, and z is no longer in memory.
+// Yet z is used on line 32 (after getAdder has exited...) and the output behaves as if z still exists.
+// What's going on???
+
+
+
+
+
+
+// Discovering whether F# does early (deep) or late (shallow) binding.
+
+let getAdder2 x =
+    let mutable z = 2 * x
+    let closure = fun y -> y + z // create a closure around z
+    z <- 5 * x // mutate z
+
+    closure // return the closure
+
+let adderFunc2 = getAdder2 10
+adderFunc2 5
+|> printfn "%d" // what gets printed? 25, or 55?
+
+
+
+
+
+let getAdder3 x =
+    let mutable z = [1; 2]
+    let closure = fun y -> y :: z // create a closure around z
+    z <- [1; 2; 3] // mutate z
+
+    closure // return the closure
+
+let adderFunc3 = getAdder3 10
+adderFunc3 5
+|> printfn "%A" // what gets printed? 25, or 55?
