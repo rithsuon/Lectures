@@ -21,13 +21,16 @@ let getAdder x =
     // z is a local variable. It can only be accessed from within this function, just
     // like the parameter x.
 
-    fun y -> y + z
+    (fun y -> y + z)
 
-// What type is getAdder?
-
+// First: what type is getAdder?
+// int->(int->int)
 
 // When we call getAdder 10, we conceptually get back: a function that adds 20 to its parameter.
 let adderFunc = getAdder 10
+// What type is adderFunc?
+// int->int
+
 // We can invoke that function:
 adderFunc 5 
 |> printfn "%d" // and expect it to print 25.
@@ -46,16 +49,16 @@ adderFunc 5
 // Discovering whether F# does early (deep) or late (shallow) binding.
 
 let getAdder2 x =
-    let mutable z = 2 * x
-    let closure = fun y -> y + z // create a closure around z
-    z <- 5 * x // mutate z
+    let mutable z = 2 * x // z = 20
+    let closure = fun y -> y + z // create a closure around z ---- "y plus 20"
+    z <- 5 * x // mutate z    z = 50
 
-    closure // return the closure
+    closure // return the closure  is it now... y plus 20, or y plus 50?
 
 let adderFunc2 = getAdder2 10
 adderFunc2 5
 |> printfn "%d" // what gets printed? 25, or 55?
-
+// 55!
 
 
 

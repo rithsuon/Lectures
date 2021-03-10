@@ -111,9 +111,6 @@ let handTotal hand =
     // Hint: List.filter and List.length. 
     let numAces = 0
 
-    // MY SOLUTION:
-    let numAces = hand |> List.filter (fun c -> c.kind = 1) |> List.length
-
     // Adjust the sum if it exceeds 21 and there are aces.
     if sum <= 21 then
         // No adjustment necessary.
@@ -220,17 +217,7 @@ let rec dealerTurn gameState =
         // The dealer does not get to take another action.
         printfn "Dealer must stay"
         gameState
-
-
-// Moves the player's first active hand to their finished hands, and returns the new game state.
-let finishActiveHand gameState =
-    let playerState = gameState.player
-    let activeHand = playerState.activeHands.Head
-    let newActiveHands = playerState.activeHands.Tail
-    let newFinishedHands = activeHand :: playerState.finishedHands
-
-    {gameState with player = {playerState with activeHands = newActiveHands;
-                                               finishedHands = newFinishedHands}}
+        
 
 // Take the player's turn by repeatedly taking a single action until they bust or stay.
 let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameState) =
@@ -342,9 +329,18 @@ let rec interactivePlayerStrategy gameState =
            interactivePlayerStrategy gameState
 
     
+open MyBlackjack
 
 [<EntryPoint>]
 let main argv =
+    //MyBlackjack.makeDeck() 
+    //|> MyBlackjack.shuffleDeck
+    //|> MyBlackjack.newGame
+    //|> MyBlackjack.oneGame MyBlackjack.recklessPlayer
+    //|> printfn "%A"
+
+    MyBlackjack.manyGames 1000 MyBlackjack.coinFlipPlayerStrategy
+    |> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
 
     0 // return an integer exit code
