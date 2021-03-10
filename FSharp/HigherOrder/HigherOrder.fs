@@ -83,28 +83,32 @@ let rec findFirst pred coll =
 |> printfn "All long names: %O"
 
 // What type is List.filter?
+// ('a->bool) -> 'a list -> 'a list
+
+
 
 // Can we write it?
+// To filter a list, we test the head. If it passes the predicate, we keep it, and follow it
+// with the filter of the tail.
 let rec filter pred coll =
     match coll with 
     | []                 -> []
-    | h :: t when pred h -> h :: filter pred t
+    | h :: t when pred h -> h :: (filter pred t)
     | _ :: t             -> filter pred t
 
-["Neal"; "Anthony"; "Mehrdad"; "Claus"; "Jaclyn"]
-|> filter (fun s -> String.length s > 5)
-|> printfn "My long names: %O"
 
 // Can we write it with TAIL recursion? 
 let filterTail pred coll =
     let rec filterTailImpl pred coll acc = // acc = the result of filtering the items before this point.
         match coll with
-        | []                 -> acc
+        | []                 -> List.rev acc
         // problem: how to combine h with acc?
         | h :: t when pred h -> filterTailImpl pred t (h :: acc) // uh oh... look at the result of this...
         | _ :: t             -> filterTailImpl pred t acc
 
     filterTailImpl pred coll []
+
+
 
 ["Neal"; "Anthony"; "Mehrdad"; "Claus"; "Jaclyn"]
 |> filterTail (fun s -> String.length s > 5)
@@ -118,14 +122,14 @@ let filterTail pred coll =
 |> printfn "All first initials: %A"
 
 // What type is List.map?
-
+// ('a->'b) -> 'a list -> 'b list
 
 
 // Recursive implementation.
 let rec map transform coll =
     match coll with 
     | [] -> []
-    | h :: t -> transform h :: map transform t
+    | h :: t -> (transform h) :: (map transform t)
 
 
 // As a tail recursive function:
@@ -159,10 +163,12 @@ let reduce aggregate coll =
     else
         reduceImpl aggregate (List.tail coll) (List.head coll)
 
+
+
 // 3b. Fold: given a combiner function 'a->'b->'a, an initial value of 'a, and a list of 'b,
 // call the combiner on the starting value and the first element of the list; then again to that
 // result and the next value, ..., until the list is folded into a single value of type 'a.
-let fold combiner initial coll =
+let fold' combiner initial coll =
     let rec foldImpl combiner coll acc =
         match coll with 
         | [] -> acc
@@ -186,3 +192,6 @@ let reverse' coll =
     List.fold (fun t h -> h :: t) [] coll
 
 // :D
+
+
+
