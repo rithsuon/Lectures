@@ -1,11 +1,11 @@
 import java.util.Iterator;
 
 public class TakeGenerator<T> implements Iterable<T> {
-	private int mCount;
+	private int mTakeCount;
 	private Iterable<T> mSource;
 	
 	public TakeGenerator(int count, Iterable<T> source) {
-		mCount = count;
+		mTakeCount = count;
 		mSource = source;
 	}
 	
@@ -14,20 +14,21 @@ public class TakeGenerator<T> implements Iterable<T> {
 	}
 	
 	private class TakeIterator implements Iterator<T> {
-		private int mCurrent;
-		private Iterator<T> mIter;
+		private int mTaken;
+		private Iterator<T> mIterator;
 		
 		public TakeIterator() {
-			mIter = mSource.iterator();
-
+			mIterator = mSource.iterator();
+			mTaken = 0;
 		}
+		
 		public boolean hasNext() {
-			return mCurrent < mCount && mIter.hasNext();
+			return mTaken < mTakeCount && mIterator.hasNext();
 		}
 		
 		public T next() {
-			mCurrent++;
-			return mIter.next();
+			mTaken++;
+			return mIterator.next();
 		}
 	}
 }

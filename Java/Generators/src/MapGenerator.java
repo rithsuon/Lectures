@@ -33,4 +33,15 @@ public class MapGenerator<TIn, TOut> implements Iterable<TOut> {
       }
    }
 
+   public static void main(String[] args) {
+      RangeGenerator range = new RangeGenerator(1, 10, 1);
+      MapGenerator<Integer, Double> squareRoots = new MapGenerator<>(
+         i -> Math.sqrt(i),
+         range
+      );
+
+      for (Double sq : squareRoots) {
+         System.out.println(sq);
+      }
+   }
 }
