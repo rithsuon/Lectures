@@ -1,13 +1,15 @@
 import java.util.Iterator;
+import java.util.function.Function;
 
 public class MapGenerator<TIn, TOut> implements Iterable<TOut> {
-   private MapFunction<TIn, TOut> mTransform;
+   private Function<TIn, TOut> mTransform;
    private Iterable<TIn> mSource;
    
-   public MapGenerator(MapFunction<TIn, TOut> transform, Iterable<TIn> source) {
+   public MapGenerator(Function<TIn, TOut> transform, Iterable<TIn> source) {
       mTransform = transform;
       mSource = source;
    }
+
    public Iterator<TOut> iterator() {
       return new MapIterator();
    }
@@ -24,12 +26,8 @@ public class MapGenerator<TIn, TOut> implements Iterable<TOut> {
       }
       
       public TOut next() {
-         return mapNext();
-      }
-      
-      private TOut mapNext() {
          TIn  next = mIter.next();
-         TOut transformed = mTransform.transform(next);
+         TOut transformed = mTransform.apply(next);
          System.out.println("Transformed: " + next + " to " + transformed);
          return transformed;
       }
