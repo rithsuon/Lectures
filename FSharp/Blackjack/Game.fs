@@ -109,7 +109,7 @@ let handTotal hand =
 
     // TODO: modify the next line to count the number of aces in the hand.
     // Hint: List.filter and List.length. 
-    let numAces = 0
+    let numAces = hand |> List.filter (fun c -> c.kind = 1) |> List.length
 
     // Adjust the sum if it exceeds 21 and there are aces.
     if sum <= 21 then
@@ -328,8 +328,26 @@ let rec interactivePlayerStrategy gameState =
     | _ -> printfn "Please choose one of the available options, dummy."
            interactivePlayerStrategy gameState
 
-    
-open MyBlackjack
+let rec coinFlipPlayerStrategy gameState = 
+    let playerHand = gameState.player.activeHands.Head
+    let legalActions = legalPlayerActions playerHand.cards
+
+    legalActions
+    |> List.map actionToString
+    |> String.concat ", "
+    |> printfn "What do you want to do? %s" 
+
+    let answer = System.Console.ReadLine()
+    // Return true if they entered "y", false otherwise.
+    match answer.ToLower() with
+    | "h" when List.contains Hit legalActions -> Hit
+    | "s" -> Stand
+    | "d" when List.contains DoubleDown legalActions -> DoubleDown
+    | "p" when List.contains Split legalActions -> Split
+    | _ -> printfn "Please choose one of the available options, dummy."
+           interactivePlayerStrategy gameState
+
+
 
 [<EntryPoint>]
 let main argv =
@@ -339,7 +357,7 @@ let main argv =
     //|> MyBlackjack.oneGame MyBlackjack.recklessPlayer
     //|> printfn "%A"
 
-    MyBlackjack.manyGames 1000 MyBlackjack.coinFlipPlayerStrategy
+    manyGames 1000 coinFlipPlayerStrategy
     |> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
 
