@@ -343,6 +343,8 @@ let main argv =
     |> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
 
+    //testing
+
     0 // return an integer exit code
 
 
