@@ -66,7 +66,13 @@ let cardToString card =
     // TODO: replace the following line with logic that converts the card's kind to a string.
     // Reminder: a 1 means "Ace", 11 means "Jack", 12 means "Queen", 13 means "King".
     // A "match" statement will be necessary. (The next function below is a hint.)
-    let kind = string card.kind
+    let kind = 
+        match card.kind with
+        |1 -> "Ace"
+        |11-> "Jack"
+        |12-> "Queen"
+        |13->"King"
+        |_-> string card.kind
 
     // "%A" can print any kind of object, and automatically converts a union (like CardSuit)
     // into a simple string.
