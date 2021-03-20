@@ -105,7 +105,7 @@ let cardValue card =
 let handTotal hand =
     // TODO: modify the next line to calculate the sum of the card values of each
     // card in the list. Hint: List.map and List.sum. (Or, if you're slick, List.sumBy)
-    let sum = hand |> List.map (fun x -> cardValue x) |> List.sum 
+    let sum = hand |> List.map (fun x -> x.kind) |> List.sum 
 
     // TODO: modify the next line to count the number of aces in the hand.
     // Hint: List.filter and List.length. 
