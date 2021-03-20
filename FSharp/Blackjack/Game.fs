@@ -328,6 +328,13 @@ let rec interactivePlayerStrategy gameState =
     | _ -> printfn "Please choose one of the available options, dummy."
            interactivePlayerStrategy gameState
 
+
+let rec greedyPlayerStrategy gameState =
+    let playerHand = gameState.player.activeHands.Head
+    let legalActions = legalPlayerActions playerHand.cards
+
+    if List.contains Hit legalActions then Hit else Stand 
+
 let rec coinFlipPlayerStrategy gameState = 
     let playerHand = gameState.player.activeHands.Head
     let legalActions = legalPlayerActions playerHand.cards
