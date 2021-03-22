@@ -231,6 +231,7 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
     // TODO: code this method using dealerTurn as a guide. Follow the same standard
     // of printing output. This function must return the new game state after the player's
     // turn has finished, like dealerTurn.
+    
 
     // Unlike the dealer, the player gets to make choices about whether they will hit or stay.
     // The "elif score < 17" code from dealerTurn is inappropriate; in its place, we will
@@ -245,6 +246,12 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         // A player with no active hands cannot take an action.
         gameState
     else
+
+        //IDK if this will work
+        let action = playerStrategy gameState
+        match action with 
+        |Stand -> gameState
+        |Hit -> gameState |> hit Player |> playerTurn playerStrategy
         // The next line is just so the code compiles. Remove it when you code the function.
         // TODO: print the player's first active hand. Call the strategy to get a PlayerAction.
         // Create a new game state based on that action. Recurse if the player can take another action 
