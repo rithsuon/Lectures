@@ -275,17 +275,19 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         // Done: print the player's first active hand. Call the strategy to get a PlayerAction.
         // Create a new game state based on that action. Recurse if the player can take another action 
         // after their chosen one, or return the game state if they cannot.
-
-        if gameState.player.activeHands.Head.cards |> handTotal > 21 then
-            printf "Player busts!"
+        let playerHand = gameState.player.activeHands.Head.cards
+        let score = gameState.player.activeHands.Head.cards |> handTotal
+        printfn "Player's hand: %s; %d points" (handToString playerHand) score
+        if  score > 21 then
+            printf "Player busts!\n"
             gameState |> playerStand
         else
             let action = playerStrategy gameState
             match action with
-            |Stand -> printf "Player stands."
-            |Hit -> printf "Player hits!"
-            |DoubleDown -> printf "Player doubled down!"
-            |Split -> printf "Player split the hand!"
+            |Stand -> printf "Player stands.\n"
+            |Hit -> printf "Player hits!\n"
+            |DoubleDown -> printf "Player doubled down!\n"
+            |Split -> printf "Player split the hand!\n"
 
             match action with
             |Stand -> gameState |> playerStand
@@ -298,17 +300,24 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
-    printfn "Dealer is showing: %A" gameState.dealer.Head // fix this line
+    printfn "Dealer is showing: %A" (handToString gameState.dealer) // fix this line
+    let dealerScore = handTotal gameState.dealer
 
-    printfn "Player's turn" 
-    printfn "Player is showing %A" gameState.player.activeHands.Head
-   // playerTurn playerStrategy gameState
-    //playerStrategy gameState
+    if dealerScore = 21 then  
+        printfn "Natural blackjack! Dealer wins."
+        {playerWins = 0; dealerWins = 1; draws = 0}
+    else
+        printfn "Player's turn" 
+        let afterPlayer = playerTurn playerStrategy gameState 
+        //call playerHand again if activeHand is not empty
+
     // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
     // using the state of the game after the player's turn finished.
 
-    printfn "\nDealer's turn"
-    
+        printfn "\nDealer's turn"
+        let finalState = dealerTurn afterPlayer
+
+        
     // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
     // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
     // hands, which gets 2 wins, 2 losses, or 1 draw
@@ -320,7 +329,7 @@ let oneGame playerStrategy gameState =
 
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
-    {playerWins = 0; dealerWins = 0; draws = 0}
+        {playerWins = 0; dealerWins = 0; draws = 0}
 
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
