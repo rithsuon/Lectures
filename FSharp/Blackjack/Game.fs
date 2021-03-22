@@ -199,6 +199,28 @@ let hit handOwner gameState =
         {gameState with deck = newDeck; player = newPlayerState}
         // TODO: this is just so the code compiles; fix it.
 
+//gets the player's top active playerHand and flag it to be doubled
+let playerDoubleDown (gameState : GameState) =
+    let newPlayerHand = {gameState.player.activeHands.Head with doubled = true}
+    let newPlayerState = {gameState.player with activeHands = (newPlayerHand :: List.tail gameState.player.activeHands)}
+    {gameState with player = newPlayerState}
+
+//move top activeHand to finishedHands
+let playerStand (gameState : GameState) =
+    let finishedHand = gameState.player.activeHands.Head
+    
+    let newPlayerState = {gameState.player with finishedHands = (finishedHand :: gameState.player.finishedHands); activeHands = gameState.player.activeHands.Tail}
+    {gameState with player = newPlayerState}
+
+//split two cards from one hand into two hands with one card
+let playerSplit (gameState : GameState) =
+    let currCardsList = gameState.player.activeHands.Head.cards
+    let handOne = {gameState.player.activeHands.Head with cards = currCardsList.Head :: []}
+    let handTwo = {gameState.player.activeHands.Head with cards = currCardsList.Tail.Head :: []}
+
+    let newPlayerState = {gameState.player with activeHands =  handOne :: (handTwo :: gameState.player.activeHands.Tail)}
+    {gameState with player = newPlayerState}
+
 
 // Take the dealer's turn by repeatedly taking a single action, hit or stay, until 
 // the dealer busts or stays.
@@ -251,11 +273,19 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         // TODO: print the player's first active hand. Call the strategy to get a PlayerAction.
         // Create a new game state based on that action. Recurse if the player can take another action 
         // after their chosen one, or return the game state if they cannot.
-        
-        // Remove this when you're ready; it's just so the code compiles.
-        gameState
-                        
+        let action = playerStrategy gameState
+        match action with
+        |Stand -> printf "Player stands."
+        |Hit -> printf "Player hits!"
+        |DoubleDown -> printf "Player doubled down!"
+        |Split -> printf "Player split the hand!"
 
+        match action with
+        |Stand -> gameState |> playerStand
+        |Hit -> gameState |> hit Player |> playerTurn playerStrategy
+        |DoubleDown -> gameState |> playerDoubleDown |> playerTurn playerStrategy 
+        |Split -> gameState |> playerSplit |> playerTurn playerStrategy
+                     
 
 // Plays one game with the given player strategy. Returns a GameLog recording the winner of the game.
 let oneGame playerStrategy gameState =
