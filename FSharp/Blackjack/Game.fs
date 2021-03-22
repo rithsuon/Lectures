@@ -271,13 +271,8 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         gameState
     else
 
-        //IDK if this will work
-        let action = playerStrategy gameState
-        match action with 
-        |Stand -> gameState
-        |Hit -> gameState |> hit Player |> playerTurn playerStrategy
         // The next line is just so the code compiles. Remove it when you code the function.
-        // TODO: print the player's first active hand. Call the strategy to get a PlayerAction.
+        // Done: print the player's first active hand. Call the strategy to get a PlayerAction.
         // Create a new game state based on that action. Recurse if the player can take another action 
         // after their chosen one, or return the game state if they cannot.
         let action = playerStrategy gameState
