@@ -186,6 +186,7 @@ let hit handOwner gameState =
         {gameState with deck = newDeck;
                         dealer = newDealerHand}
     else
+        
         // TODO: updating the player is trickier. We are always working with the player's first
         // active hand. Create a new first hand by adding the top card to that hand's card list.
         // Then update the player's active hands so that the new first hand is head of the list; and the
@@ -237,6 +238,7 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
     // playerTurn must call that function (the parameter playerStrategy) to decide whether
     // to hit or stay.
     let playerState = gameState.player
+    
 
     if playerState.activeHands.IsEmpty then
         // A player with no active hands cannot take an action.
@@ -256,9 +258,12 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
-    printfn "Dealer is showing: %A" 0 // fix this line
+    printfn "Dealer is showing: %A" gameState.dealer.Head // fix this line
 
-    printfn "Player's turn"
+    printfn "Player's turn" 
+    printfn "Player is showing %A" gameState.player.activeHands.Head
+   // playerTurn playerStrategy gameState
+    //playerStrategy gameState
     // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
     // using the state of the game after the player's turn finished.
 
@@ -368,9 +373,13 @@ let main argv =
     //|> MyBlackjack.newGame
     //|> MyBlackjack.oneGame MyBlackjack.recklessPlayer
     //|> printfn "%A"
-
-    manyGames 1000 coinFlipPlayerStrategy
-    |> printfn "%A"
+    makeDeck()
+    |>shuffleDeck
+    |>newGame
+    |>oneGame interactivePlayerStrategy
+    |> printfn"%A"
+    //manyGames 1000 coinFlipPlayerStrategy
+    //|> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
 
     //testing
