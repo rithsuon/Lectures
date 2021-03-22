@@ -275,18 +275,23 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         // Done: print the player's first active hand. Call the strategy to get a PlayerAction.
         // Create a new game state based on that action. Recurse if the player can take another action 
         // after their chosen one, or return the game state if they cannot.
-        let action = playerStrategy gameState
-        match action with
-        |Stand -> printf "Player stands."
-        |Hit -> printf "Player hits!"
-        |DoubleDown -> printf "Player doubled down!"
-        |Split -> printf "Player split the hand!"
 
-        match action with
-        |Stand -> gameState |> playerStand
-        |Hit -> gameState |> hit Player |> playerTurn playerStrategy
-        |DoubleDown -> gameState |> playerDoubleDown |> playerTurn playerStrategy 
-        |Split -> gameState |> playerSplit |> playerTurn playerStrategy
+        if gameState.player.activeHands.Head.cards |> handTotal > 21 then
+            printf "Player busts!"
+            gameState |> playerStand
+        else
+            let action = playerStrategy gameState
+            match action with
+            |Stand -> printf "Player stands."
+            |Hit -> printf "Player hits!"
+            |DoubleDown -> printf "Player doubled down!"
+            |Split -> printf "Player split the hand!"
+
+            match action with
+            |Stand -> gameState |> playerStand
+            |Hit -> gameState |> hit Player |> playerTurn playerStrategy
+            |DoubleDown -> gameState |> playerDoubleDown |> playerTurn playerStrategy 
+            |Split -> gameState |> playerSplit |> playerTurn playerStrategy
                      
 
 // Plays one game with the given player strategy. Returns a GameLog recording the winner of the game.
