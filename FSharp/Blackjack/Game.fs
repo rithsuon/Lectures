@@ -63,7 +63,7 @@ let rand = new System.Random()
 
 // Returns a string describing a card.
 let cardToString card =
-    // TODO: replace the following line with logic that converts the card's kind to a string.
+    // Done: replace the following line with logic that converts the card's kind to a string.
     // Reminder: a 1 means "Ace", 11 means "Jack", 12 means "Queen", 13 means "King".
     // A "match" statement will be necessary. (The next function below is a hint.)
     let kind = 
@@ -81,15 +81,14 @@ let cardToString card =
 
 // Returns a string describing the cards in a hand.    
 let handToString hand =
-    // TODO: replace the following line with statement(s) to build a string describing the given hand.
+    // Done: replace the following line with statement(s) to build a string describing the given hand.
     // The string consists of the results of cardToString when called on each Card in the hand (a Card list),
     // separated by commas. You need to build this string yourself; the built-in "toString" methods for lists
     // insert semicolons and square brackets that I do not want.
-    sprintf "%A" hand
-
+    hand |> List.map cardToString |> String.concat ", " 
+    
     // Hint: transform each card in the hand to its cardToString representation. Then read the documentation
     // on String.concat.
-
 
     
 // Returns the "value" of a card in a poker hand, where all three "face" cards are worth 10
@@ -109,11 +108,11 @@ let cardValue card =
 // a value of 11 to a value of 1, and a new total is computed.
 // TODO: fill in the marked parts of this function.
 let handTotal hand =
-    // TODO: modify the next line to calculate the sum of the card values of each
+    // Done: modify the next line to calculate the sum of the card values of each
     // card in the list. Hint: List.map and List.sum. (Or, if you're slick, List.sumBy)
-    let sum = hand |> List.map (fun x -> x.kind) |> List.sum 
+    let sum = hand |> List.map (fun x -> cardValue x) |> List.sum 
 
-    // TODO: modify the next line to count the number of aces in the hand.
+    // Done: modify the next line to count the number of aces in the hand.
     // Hint: List.filter and List.length. 
     let numAces = hand |> List.filter (fun c -> c.kind = 1) |> List.length
 
