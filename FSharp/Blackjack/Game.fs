@@ -293,7 +293,7 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
             match action with
             |Stand -> gameState |> playerStand
             |Hit -> gameState |> hit Player |> playerTurn playerStrategy
-            |DoubleDown -> gameState |> playerDoubleDown |> playerTurn (fun x -> Stand) 
+            |DoubleDown -> gameState |> playerDoubleDown |> playerTurn (fun _ -> Stand) 
             |Split -> gameState |> playerSplit |> playerTurn playerStrategy
                      
 let determineWinner (playerHand : Card list) (dealerHand : Card list) =
@@ -361,7 +361,7 @@ let manyGames n playerStrategy =
     // and then consider List.reduce.
     let combiner (curr : GameLog) (next : GameLog) =
         {curr with playerWins = curr.playerWins + next.playerWins; dealerWins = curr.dealerWins + next.dealerWins; draws = curr.draws + next.draws}
-    List.init n (fun x -> oneGame playerStrategy (makeDeck() |> shuffleDeck |> newGame)) |> List.reduce combiner 
+    List.init n (fun _ -> oneGame playerStrategy (makeDeck() |> shuffleDeck |> newGame)) |> List.reduce combiner 
 
             
 
