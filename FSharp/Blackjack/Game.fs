@@ -308,9 +308,15 @@ let oneGame playerStrategy gameState =
         {playerWins = 0; dealerWins = 1; draws = 0}
     else
         printfn "Player's turn" 
-        let afterPlayer = playerTurn playerStrategy gameState 
+        //let afterPlayer = playerTurn playerStrategy gameState 
         //call playerHand again if activeHand is not empty
-
+        let rec oneGame' (state : GameState) =
+            let afterState = playerTurn playerStrategy state
+            match afterState.player.activeHands with
+            |[] -> afterState
+            |hd :: tl -> oneGame' afterState
+            
+        let afterPlayer = oneGame' gameState
     // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
     // using the state of the game after the player's turn finished.
 
