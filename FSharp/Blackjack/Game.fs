@@ -295,7 +295,16 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
             |DoubleDown -> gameState |> playerDoubleDown |> playerTurn playerStrategy 
             |Split -> gameState |> playerSplit |> playerTurn playerStrategy
                      
+let determineWinner (playerHand : Card list) (dealerHand : Card list) =
+    let playerScore = handTotal playerHand
+    let dealerScore = handTotal dealerHand
 
+    if playerScore <= 21 && (dealerScore > 21 || playerScore > dealerScore) then
+        Win
+    else if playerScore = dealerScore then
+        Draw
+    else
+        Lose
 // Plays one game with the given player strategy. Returns a GameLog recording the winner of the game.
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
@@ -323,9 +332,14 @@ let oneGame playerStrategy gameState =
         printfn "\nDealer's turn"
         
         let finalState = dealerTurn afterPlayer
-        let score = gameState.player.activeHands.Head.cards |> handTotal
-        if score > 21 then {playerWins = 0; dealerWins = 1; draws = 0} else if score <= 21 && dealerScore < score then {playerWins = 1; dealerWins = 0; draws = 0} else if score <= 21 && dealerScore > score then {playerWins = 0; dealerWins = 1; draws = 0} else if score <= 21 && dealerScore > 21 then {playerWins = 1; dealerWins = 0; draws = 0}
-        else {playerWins = 0; dealerWins = 0; draws = 1}
+        let rec accWinners (pHand : PlayerHand list) (dHand : Card list) acc =
+            match pHand with
+            |[] -> acc
+            |hd :: tl -> accWinners tl dHand (match determineWinner hd.cards dHand with |Win -> {acc with playerWins = if hd.doubled then 2 + acc.playerWins else 1 + acc.playerWins} |Draw -> {acc with draws = acc.draws + 1} | Lose -> {acc with dealerWins = if hd.doubled then 2 + acc.dealerWins else 1 + acc.dealerWins})
+        
+
+        accWinners finalState.player.finishedHands finalState.dealer {playerWins = 0; dealerWins = 0; draws = 0}
+
         
     // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
     // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
