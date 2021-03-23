@@ -411,10 +411,7 @@ let rec interactivePlayerStrategy gameState =
            interactivePlayerStrategy gameState
 
 let rec inactivePlayerStrategy gameState =
-    let playerHand = gameState.player.activeHands.Head
-    let legalActions = legalPlayerActions playerHand.cards
-
-    if List.contains Stand legalActions then Stand else Stand 
+    Stand
 
 
 let rec greedyPlayerStrategy gameState =
