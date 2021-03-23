@@ -315,8 +315,11 @@ let oneGame playerStrategy gameState =
     // using the state of the game after the player's turn finished.
 
         printfn "\nDealer's turn"
+        
         let finalState = dealerTurn afterPlayer
-
+        let score = gameState.player.activeHands.Head.cards |> handTotal
+        if score > 21 then {playerWins = 0; dealerWins = 1; draws = 0} else if score <= 21 && dealerScore < score then {playerWins = 1; dealerWins = 0; draws = 0} else if score <= 21 && dealerScore > score then {playerWins = 0; dealerWins = 1; draws = 0} else if score <= 21 && dealerScore > 21 then {playerWins = 1; dealerWins = 0; draws = 0}
+        else {playerWins = 0; dealerWins = 0; draws = 1}
         
     // TODO: determine the winner(s)! For each of the player's hands, determine if that hand is a 
     // win, loss, or draw. Accumulate (!!) the sum total of wins, losses, and draws, accounting for doubled-down
@@ -329,7 +332,7 @@ let oneGame playerStrategy gameState =
 
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
-        {playerWins = 0; dealerWins = 0; draws = 0}
+        
 
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
