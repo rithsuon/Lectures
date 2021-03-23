@@ -311,15 +311,20 @@ let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
     let dealerScore = handTotal gameState.dealer
-    printfn "Dealer is showing: %A; %d points" (handToString gameState.dealer) dealerScore
+    printfn "Dealer is showing: %A; %d points" (cardToString gameState.dealer.Head) (cardValue gameState.dealer.Head)
 
     if dealerScore = 21 then  
-        printfn "Natural blackjack! Dealer wins."
-        {playerWins = 0; dealerWins = 1; draws = 0}
+        printfn "Dealer's Hand: %A; %d points" (handToString gameState.dealer) dealerScore
+        let pScore = handTotal gameState.player.activeHands.Head.cards
+        if pScore = dealerScore then
+            printfn "Both players have natural blackjack! Draw."
+            {playerWins = 0; dealerWins = 0; draws = 1}
+        else
+            printfn "Natural blackjack! Dealer wins."
+            {playerWins = 0; dealerWins = 1; draws = 0}
     else
         printfn "Player's turn" 
         
-        //call playerHand again if activeHand is not empty
 
     // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
     // using the state of the game after the player's turn finished.
@@ -426,6 +431,32 @@ let rec coinFlipPlayerStrategy gameState =
     else
         Stand
 
+let basicPlayerStrategy gameState =
+    let dFirstCardVal = cardValue gameState.dealer.Head
+    let playerHand = gameState.player.activeHands.Head.cards
+    let pFirstCardVal = cardValue playerHand.Head
+    let pSecCardVal = cardValue playerHand.Tail.Head
+    let pScore = handTotal playerHand
+
+    if (pFirstCardVal = pSecCardVal) && pFirstCardVal = 5 || pScore = 10 || pScore = 11 || pScore = 9 then
+            match pScore with
+            |10 when dFirstCardVal = 10 || dFirstCardVal = 11 -> Hit
+            |9 when dFirstCardVal = 2 || dFirstCardVal >= 7 -> Hit
+            |_ -> DoubleDown
+    else if pFirstCardVal = pSecCardVal then
+        if pScore = 20 then Stand else Split
+    else
+        if dFirstCardVal >= 2 && dFirstCardVal <= 6 then
+            if pScore >= 12 then Stand else Hit 
+        else if dFirstCardVal >= 7 && dFirstCardVal <= 10 then
+            if pScore <= 16 then Hit else Stand
+        else
+            if (pFirstCardVal = 11 || pSecCardVal = 11) && pScore <= 16 then
+                Hit
+            else if pScore <= 11 then 
+                Hit
+            else
+                Stand
 
 
 [<EntryPoint>]
@@ -441,7 +472,7 @@ let main argv =
     |>oneGame interactivePlayerStrategy
     |> printfn"%A"
 
-    manyGames 100 coinFlipPlayerStrategy |> printfn "%A"
+    manyGames 100 basicPlayerStrategy |> printfn "%A"
     //manyGames 1000 coinFlipPlayerStrategy
     //|> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
