@@ -351,8 +351,6 @@ let oneGame playerStrategy gameState =
     // - player's score > dealer's score
     // If neither side busts and they have the same score, the result is a draw.
 
-    // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
-    // described above.
 
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
@@ -360,9 +358,10 @@ let manyGames n playerStrategy =
     // TODO: run oneGame with the playerStrategy n times, and accumulate the result. 
     // If you're slick, you won't do any recursion yourself. Instead read about List.init, 
     // and then consider List.reduce.
+    let combiner (curr : GameLog) (next : GameLog) =
+        {curr with playerWins = curr.playerWins + next.playerWins; dealerWins = curr.dealerWins + next.dealerWins; draws = curr.draws + next.draws}
+    List.init n (fun x -> oneGame playerStrategy (makeDeck() |> shuffleDeck |> newGame)) |> List.reduce combiner 
 
-    // TODO: this is a "blank" GameLog. Return something more appropriate.
-    {playerWins = 0; dealerWins = 0; draws = 0}
             
 
         
@@ -451,8 +450,10 @@ let main argv =
     makeDeck()
     |>shuffleDeck
     |>newGame
-    |>oneGame inactivePlayerStrategy
+    |>oneGame interactivePlayerStrategy
     |> printfn"%A"
+
+    //manyGames 100 greedyPlayerStrategy |> printfn "%A"
     //manyGames 1000 coinFlipPlayerStrategy
     //|> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
