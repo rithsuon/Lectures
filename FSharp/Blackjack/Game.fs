@@ -421,23 +421,10 @@ let rec greedyPlayerStrategy gameState =
     if List.contains Hit legalActions then Hit else Stand 
 
 let rec coinFlipPlayerStrategy gameState = 
-    let playerHand = gameState.player.activeHands.Head
-    let legalActions = legalPlayerActions playerHand.cards
-
-    legalActions
-    |> List.map actionToString
-    |> String.concat ", "
-    |> printfn "What do you want to do? %s" 
-
-    let answer = System.Console.ReadLine()
-    // Return true if they entered "y", false otherwise.
-    match answer.ToLower() with
-    | "h" when List.contains Hit legalActions -> Hit
-    | "s" -> Stand
-    | "d" when List.contains DoubleDown legalActions -> DoubleDown
-    | "p" when List.contains Split legalActions -> Split
-    | _ -> printfn "Please choose one of the available options, dummy."
-           interactivePlayerStrategy gameState
+    if rand.Next(100) > 49 then
+        Hit
+    else
+        Stand
 
 
 
@@ -454,12 +441,7 @@ let main argv =
     |>oneGame interactivePlayerStrategy
     |> printfn"%A"
 
-    let deck = [{ suit = Hearts ; kind = 5}; { suit = Clubs ; kind = 9};
-    { suit = Spades ; kind = 5}; { suit = Clubs ; kind = 13};
-    { suit = Clubs ; kind = 5}; {suit = Hearts; kind = 4}; {suit = Clubs; kind = 1}; {suit = Hearts; kind = 1}]
-    deck |> newGame |> oneGame interactivePlayerStrategy |> printfn " %A "
-
-    //manyGames 100 greedyPlayerStrategy |> printfn "%A"
+    manyGames 100 coinFlipPlayerStrategy |> printfn "%A"
     //manyGames 1000 coinFlipPlayerStrategy
     //|> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
