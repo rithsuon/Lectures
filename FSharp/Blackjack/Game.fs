@@ -198,13 +198,6 @@ let hit handOwner gameState =
         let newPlayerState = {gameState.player with activeHands = (newPlayerHand :: List.tail gameState.player.activeHands)}
         {gameState with deck = newDeck; player = newPlayerState}
         // TODO: this is just so the code compiles; fix it.
-
-//gets the player's top active playerHand and flag it to be doubled
-let playerDoubleDown (gameState : GameState) =
-    let newPlayerHand = {gameState.player.activeHands.Head with doubled = true}
-    let newPlayerState = {gameState.player with activeHands = (newPlayerHand :: List.tail gameState.player.activeHands)}
-    {gameState with player = newPlayerState}
-
 //move top activeHand to finishedHands
 let playerStand (gameState : GameState) =
     let finishedHand = gameState.player.activeHands.Head
@@ -212,15 +205,23 @@ let playerStand (gameState : GameState) =
     let newPlayerState = {gameState.player with finishedHands = (finishedHand :: gameState.player.finishedHands); activeHands = gameState.player.activeHands.Tail}
     {gameState with player = newPlayerState}
 
+//gets the player's top active playerHand and flag it to be doubled
+let playerDoubleDown (gameState : GameState) =
+    let newPlayerHand = {gameState.player.activeHands.Head with doubled = true}
+    let newPlayerState = {gameState.player with activeHands = (newPlayerHand :: List.tail gameState.player.activeHands)}
+    hit Player {gameState with player = newPlayerState}
+
+
 //split two cards from one hand into two hands with one card
 let playerSplit (gameState : GameState) =
     let currCardsList = gameState.player.activeHands.Head.cards
     let handOne = {gameState.player.activeHands.Head with cards = currCardsList.Head :: []}
     let handTwo = {gameState.player.activeHands.Head with cards = currCardsList.Tail.Head :: []}
 
-    let newPlayerState = {gameState.player with activeHands =  handOne :: (handTwo :: gameState.player.activeHands.Tail)}
-    {gameState with player = newPlayerState}
-
+    let newPlayerState = {gameState.player with activeHands = handTwo :: gameState.player.activeHands.Tail}
+    let oneDone = hit Player {gameState with player = newPlayerState}
+    let secondPlayerState = {oneDone.player with activeHands =  handOne :: oneDone.player.activeHands}
+    hit Player {oneDone with player = secondPlayerState}
 
 // Take the dealer's turn by repeatedly taking a single action, hit or stay, until 
 // the dealer busts or stays.
@@ -292,7 +293,7 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
             match action with
             |Stand -> gameState |> playerStand
             |Hit -> gameState |> hit Player |> playerTurn playerStrategy
-            |DoubleDown -> gameState |> playerDoubleDown |> playerTurn playerStrategy 
+            |DoubleDown -> gameState |> playerDoubleDown |> playerTurn (fun x -> Stand) 
             |Split -> gameState |> playerSplit |> playerTurn playerStrategy
                      
 let determineWinner (playerHand : Card list) (dealerHand : Card list) =
@@ -309,8 +310,8 @@ let determineWinner (playerHand : Card list) (dealerHand : Card list) =
 let oneGame playerStrategy gameState =
     // TODO: print the first card in the dealer's hand to the screen, because the Player can see
     // one card from the dealer's hand in order to make their decisions.
-    printfn "Dealer is showing: %A" (handToString gameState.dealer) // fix this line
     let dealerScore = handTotal gameState.dealer
+    printfn "Dealer is showing: %A; %d points" (handToString gameState.dealer) dealerScore
 
     if dealerScore = 21 then  
         printfn "Natural blackjack! Dealer wins."
@@ -452,6 +453,11 @@ let main argv =
     |>newGame
     |>oneGame interactivePlayerStrategy
     |> printfn"%A"
+
+    let deck = [{ suit = Hearts ; kind = 5}; { suit = Clubs ; kind = 9};
+    { suit = Spades ; kind = 5}; { suit = Clubs ; kind = 13};
+    { suit = Clubs ; kind = 5}; {suit = Hearts; kind = 4}; {suit = Clubs; kind = 1}; {suit = Hearts; kind = 1}]
+    deck |> newGame |> oneGame interactivePlayerStrategy |> printfn " %A "
 
     //manyGames 100 greedyPlayerStrategy |> printfn "%A"
     //manyGames 1000 coinFlipPlayerStrategy
