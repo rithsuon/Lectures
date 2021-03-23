@@ -353,8 +353,7 @@ let oneGame playerStrategy gameState =
 
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
-        
-        {playerWins = 0; dealerWins = 0; draws = 0}
+
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
 let manyGames n playerStrategy =
