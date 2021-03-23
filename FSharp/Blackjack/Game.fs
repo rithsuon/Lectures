@@ -1,4 +1,4 @@
-﻿/// Card representations.
+/// Card representations.
 // An "enum"-type union for card suit.
 type CardSuit = 
     | Spades 
@@ -317,8 +317,12 @@ let oneGame playerStrategy gameState =
         {playerWins = 0; dealerWins = 1; draws = 0}
     else
         printfn "Player's turn" 
-        //let afterPlayer = playerTurn playerStrategy gameState 
+        
         //call playerHand again if activeHand is not empty
+
+    // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
+    // using the state of the game after the player's turn finished.
+
         let rec oneGame' (state : GameState) =
             let afterState = playerTurn playerStrategy state
             match afterState.player.activeHands with
@@ -326,10 +330,7 @@ let oneGame playerStrategy gameState =
             |hd :: tl -> oneGame' afterState
             
         let afterPlayer = oneGame' gameState
-    // TODO: play the game! First the player gets their turn. The dealer then takes their turn,
-    // using the state of the game after the player's turn finished.
 
-        printfn "\nDealer's turn"
         
         let finalState = dealerTurn afterPlayer
         let rec accWinners (pHand : PlayerHand list) (dHand : Card list) acc =
@@ -353,7 +354,7 @@ let oneGame playerStrategy gameState =
     // TODO: this is a "blank" GameLog. Return something more appropriate for each of the outcomes
     // described above.
         
-
+        {playerWins = 0; dealerWins = 0; draws = 0}
 
 // Plays n games using the given playerStrategy, and returns the combined game log.
 let manyGames n playerStrategy =
@@ -410,6 +411,12 @@ let rec interactivePlayerStrategy gameState =
     | _ -> printfn "Please choose one of the available options, dummy."
            interactivePlayerStrategy gameState
 
+let rec inactivePlayerStrategy gameState =
+    let playerHand = gameState.player.activeHands.Head
+    let legalActions = legalPlayerActions playerHand.cards
+
+    if List.contains Stand legalActions then Stand else Stand 
+
 
 let rec greedyPlayerStrategy gameState =
     let playerHand = gameState.player.activeHands.Head
@@ -448,7 +455,7 @@ let main argv =
     makeDeck()
     |>shuffleDeck
     |>newGame
-    |>oneGame interactivePlayerStrategy
+    |>oneGame inactivePlayerStrategy
     |> printfn"%A"
     //manyGames 1000 coinFlipPlayerStrategy
     //|> printfn "%A"
