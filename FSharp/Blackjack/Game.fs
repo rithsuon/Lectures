@@ -1,3 +1,4 @@
+//Group: Rith Suon and Nicholas Bautista
 /// Card representations.
 // An "enum"-type union for card suit.
 type CardSuit = 
@@ -466,13 +467,9 @@ let main argv =
     //|> MyBlackjack.newGame
     //|> MyBlackjack.oneGame MyBlackjack.recklessPlayer
     //|> printfn "%A"
-    makeDeck()
-    |>shuffleDeck
-    |>newGame
-    |>oneGame interactivePlayerStrategy
-    |> printfn"%A"
 
-    manyGames 100 basicPlayerStrategy |> printfn "%A"
+
+    manyGames 1000 basicPlayerStrategy |> printfn "%A"
     //manyGames 1000 coinFlipPlayerStrategy
     //|> printfn "%A"
     // TODO: call manyGames to run 1000 games with a particular strategy.
