@@ -278,7 +278,7 @@ let rec playerTurn (playerStrategy : GameState->PlayerAction) (gameState : GameS
         // Create a new game state based on that action. Recurse if the player can take another action 
         // after their chosen one, or return the game state if they cannot.
         let playerHand = gameState.player.activeHands.Head.cards
-        let score = gameState.player.activeHands.Head.cards |> handTotal
+        let score = handTotal playerHand
         printfn "Player's hand: %s; %d points" (handToString playerHand) score
         if  score > 21 then
             printf "Player busts!\n"
