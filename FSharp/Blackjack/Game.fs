@@ -438,25 +438,28 @@ let basicPlayerStrategy gameState =
     let pFirstCardVal = cardValue playerHand.Head
     let pSecCardVal = cardValue playerHand.Tail.Head
     let pScore = handTotal playerHand
-
-    if (pFirstCardVal = pSecCardVal) && pFirstCardVal = 5 || pScore = 10 || pScore = 11 || pScore = 9 then
-            match pScore with
-            |10 when dFirstCardVal = 10 || dFirstCardVal = 11 -> Hit
-            |9 when dFirstCardVal = 2 || dFirstCardVal >= 7 -> Hit
-            |_ -> DoubleDown
-    else if pFirstCardVal = pSecCardVal then
-        if pScore = 20 then Stand else Split
-    else
-        if dFirstCardVal >= 2 && dFirstCardVal <= 6 then
-            if pScore >= 12 then Stand else Hit 
-        else if dFirstCardVal >= 7 && dFirstCardVal <= 10 then
-            if pScore <= 16 then Hit else Stand
+    
+    if (pFirstCardVal = pSecCardVal) && pFirstCardVal = 5 then
+        DoubleDown
+    else 
+        if pScore = 10 || pScore = 11 || pScore = 9 then
+                match pScore with
+                |10 when dFirstCardVal = 10 || dFirstCardVal = 11 -> Hit
+                |9 when dFirstCardVal = 2 || dFirstCardVal >= 7 -> Hit
+                |_ -> DoubleDown
+        else if pFirstCardVal = pSecCardVal then
+            if pScore = 20 then Stand else Split
         else
-            if (pFirstCardVal = 11 || pSecCardVal = 11) && pScore <= 16 then
-                Hit
-            else if pScore <= 11 then 
-                Hit
+            if dFirstCardVal >= 2 && dFirstCardVal <= 6 then
+                if pScore >= 12 then Stand else Hit 
+            else if dFirstCardVal >= 7 && dFirstCardVal <= 10 then
+                if pScore <= 16 then Hit else Stand
             else
+                if (pFirstCardVal = 11 || pSecCardVal = 11) && pScore <= 16 then
+                    Hit
+                else if pScore <= 11 then 
+                    Hit
+                else
                 Stand
 
 
