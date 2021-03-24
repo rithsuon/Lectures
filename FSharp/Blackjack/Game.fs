@@ -455,7 +455,8 @@ let basicPlayerStrategy gameState =
             else if dFirstCardVal >= 7 && dFirstCardVal <= 10 then
                 if pScore <= 16 then Hit else Stand
             else
-                if (pFirstCardVal = 11 || pSecCardVal = 11) && pScore <= 16 then
+                let numAces = playerHand |> List.filter (fun c -> c.kind = 1) |> List.length
+                if numAces >= 1 && pScore <= 16 then
                     Hit
                 else if pScore <= 11 then 
                     Hit
